@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
-import Live from "./pages/Live/App.jsx";
+// import Live from "./pages/Live/App.jsx";
 import StyleLogSelect from "./pages/Closet/History/styleLogSelect.jsx";
 // import VideoRoomComponent from "./pages/Live/VideoRoomComponent.jsx";
 import Browse from "./pages/Browse";
@@ -24,6 +24,7 @@ import MyPageSettingsPropertySetter from "./pages/MyPage/Settings/PropertySetter
 import MyPageAccountList from "./pages/MyPage/AccountList";
 import EnterLive from "./pages/Live/EnterLive/App.jsx";
 import Image from "./pages/AddFashion/ImageEdit.jsx";
+import LiveHome from "./pages/Live/index.jsx";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
 
-          <Route path="live" element={<Live />} />
+          <Route path="live" element={<LiveHome />} />
           <Route path="enter" element={<EnterLive />} />
           <Route path="browse" element={<Browse />} />
           <Route path="closet" element={<Closet />} />

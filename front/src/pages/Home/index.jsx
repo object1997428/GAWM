@@ -14,7 +14,9 @@ import "swiper/css/pagination";
 
 import { Autoplay, Pagination } from "swiper/modules";
 import { fetchUserInfo, useUserStore } from "../../stores/user";
-
+import LiveComponent from "../Browse/LiveComponent";
+import { gawmApiAxios } from "../../utilities/http-commons";
+const gawmapiAxios = gawmApiAxios();
 /**
  * 홈페이지 component를 생성합니다
  *
@@ -27,9 +29,10 @@ function Home() {
   useEffect(() => {
     const fetchLiveRooms = async () => {
       try {
-        const response = await gawmapiAxios.get("/live-room/follow/");
+        const response = await gawmapiAxios.get("/live-room/follow");
         setLiveRooms(response.data.content);
       } catch (error) {
+        console.error("/live-room/follow/ 실패!!");
         setLiveRooms(null);
       }
     };
@@ -82,6 +85,7 @@ function Home() {
             ? liveRooms.map((room) => (
                 <LiveComponent
                   key={room.liveId}
+                  sessionId={room.session}
                   image={room.profileImg}
                   title={room.name}
                   createdDate={new Date(room.createdAt)}
@@ -91,9 +95,9 @@ function Home() {
             : ""}
         </div>
 
-        <div className="px-2.5">
+        {/* <div className="px-2.5">
           <TodaysLook />
-        </div>
+        </div> */}
       </div>
     </>
   );

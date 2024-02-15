@@ -5,21 +5,29 @@ import UserVideoComponent from "./UserVideoComponent.jsx";
 import { OpenVidu } from "openvidu-browser";
 import UserModel from "./models/user-model.jsx";
 import ChatComponent from "./chat/ChatComponent.jsx";
-// import { useHistory } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
 import { useNavigate, Outlet } from "react-router-dom";
+import { useUserStore, fetchUserInfo } from "@/stores/user.js";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:8080/";
 
+function withUser(Component) {
+  return function WrappedComponent(props) {
+    const user = useUserStore((state) => state.user);
+    return <Component {...props} user={user} />;
+  };
+}
+
 class Live extends Component {
   constructor(props) {
     super(props);
 
+    // console.log("props", this.props.user);
+
     this.state = {
       mySessionId: "SessionA",
-      myUserName: "은은한 달",
+      myUserName: this.props.user ? this.props.user.nickname : "none",
       myPoint: 10,
       session: undefined,
       mainStreamManager: undefined,
@@ -50,6 +58,17 @@ class Live extends Component {
     this.handleRedirect = this.handleRedirect.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    // user props가 변경되었을 때만 업데이트합니다.
+    if (prevProps.user !== this.props.user) {
+      this.setState({
+        myUserName: this.props.user.nickname, // 새로운 user 값으로 상태를 업데이트합니다.
+        // 다른 필요한 업데이트도 수행할 수 있습니다.
+      });
+    }
   }
 
   componentDidMount() {
@@ -327,7 +346,7 @@ class Live extends Component {
                     required
                   />
                 </p> */}
-                {/* <p>
+                <p>
                   <label> Session: </label>
                   <input
                     className="form-control"
@@ -337,7 +356,7 @@ class Live extends Component {
                     onChange={this.handleChangeSessionId}
                     required
                   />
-                </p> */}
+                </p>
                 <p>
                   <label> 제목: </label>
                   <input
@@ -503,4 +522,4 @@ class Live extends Component {
   }
 }
 
-export default Live;
+export default withUser(Live);
