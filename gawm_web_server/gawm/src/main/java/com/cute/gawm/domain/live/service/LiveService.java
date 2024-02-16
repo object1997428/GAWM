@@ -63,7 +63,7 @@ public class LiveService {
         List<LiveMiniResponse> liveList = new ArrayList<>();
         followings.getFollowingList().forEach(followingId -> {
             User user = userRepository.findById(followingId).orElseThrow(() -> new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-            Live live = liveRepository.findByUserAndIsDeletedFalse(user);
+            Live live = liveRepository.findByUserAndIsDeletedFalse(user).orElseThrow();
             if (live != null) {
                 LiveMiniResponse build = LiveMiniResponse.builder()
                         .liveId(live.getLiveId())
@@ -204,7 +204,7 @@ public class LiveService {
         Integer livePoint = (Integer) params.get("livePoint");
 //        Boolean isPublic = (Boolean) params.get("isPublic");
         Boolean deleted = (Boolean) params.get("deleted");
-        createLive(session.getSessionId(), userId, liveName, livePoint, isPublic, params);
+        this.createLive(session.getSessionId(), userId, liveName, livePoint, isPublic, params);
 
         log.info("liveName={}",liveName );
         log.info("livePoint={}",livePoint );
