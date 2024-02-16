@@ -1,0 +1,65 @@
+[{
+  "_id": 1,
+  "following_id_list": [
+    3,
+    2
+  ],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 2,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 3,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 4,
+  "following_id_list": [
+    1,
+    3,
+    6,
+    7,
+    8,
+    9
+  ],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 5,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 6,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 7,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 8,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 9,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 10,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+},
+{
+  "_id": 11,
+  "following_id_list": [],
+  "_class": "com.cute.gawm.domain.following.entity.Following"
+}]
