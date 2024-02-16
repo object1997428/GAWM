@@ -1,0 +1,490 @@
+[{
+  "_id": {
+    "$oid": "65ce42a8a1d3434b2dd058fe"
+  },
+  "clothes_id": 1,
+  "colors": [
+    "카키",
+    "그레이",
+    "베이지"
+  ],
+  "s_category": "재킷",
+  "materials": [
+    "코듀로이",
+    "스웨이드",
+    "데님"
+  ],
+  "patterns": [
+    "무지",
+    "레터링",
+    "그래픽"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4356a1d3434b2dd058ff"
+  },
+  "clothes_id": 2,
+  "colors": [
+    "브라운",
+    "베이지",
+    "그레이"
+  ],
+  "s_category": "재킷",
+  "materials": [
+    "스웨이드",
+    "코듀로이",
+    "가죽"
+  ],
+  "patterns": [
+    "무지",
+    "레터링",
+    "체크"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4453a1d3434b2dd05900"
+  },
+  "clothes_id": 3,
+  "colors": [
+    "블랙",
+    "네이비",
+    "그레이"
+  ],
+  "s_category": "청바지",
+  "materials": [
+    "합성섬유",
+    "면",
+    "데님"
+  ],
+  "patterns": [
+    "무지",
+    "스트라이프",
+    "그라데이션"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4d81a1d3434b2dd05901"
+  },
+  "clothes_id": 4,
+  "colors": [
+    "블루",
+    "네이비",
+    "스카이블루"
+  ],
+  "s_category": "재킷",
+  "materials": [
+    "데님",
+    "합성섬유",
+    "면"
+  ],
+  "patterns": [
+    "무지",
+    "레터링",
+    "그래픽"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4dd2a1d3434b2dd05902"
+  },
+  "clothes_id": 5,
+  "colors": [
+    "블랙",
+    "네이비",
+    "그레이"
+  ],
+  "s_category": "티셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "저지"
+  ],
+  "patterns": [
+    "스트라이프",
+    "지그재그",
+    "체크"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4e0fa1d3434b2dd05903"
+  },
+  "clothes_id": 6,
+  "colors": [
+    "라벤더",
+    "퍼플",
+    "핑크"
+  ],
+  "s_category": "니트/스웨터",
+  "materials": [
+    "그라데이션",
+    "그래픽",
+    "레터링",
+    "무지",
+    "지그재그",
+    "체크"
+  ],
+  "patterns": [
+    "면",
+    "스웨이드",
+    "저지",
+    "합성섬유"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce4e55a1d3434b2dd05904"
+  },
+  "clothes_id": 7,
+  "colors": [
+    "카키",
+    "브라운",
+    "그린"
+  ],
+  "s_category": "긴바지",
+  "materials": [
+    "면",
+    "합성섬유",
+    "저지"
+  ],
+  "patterns": [
+    "무지",
+    "스트라이프",
+    "레터링"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce5a26a1d3434b2dd05905"
+  },
+  "clothes_id": 8,
+  "colors": [
+    "화이트",
+    "베이지",
+    "라벤더"
+  ],
+  "s_category": "맨투맨/스웨트셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "네오프렌"
+  ],
+  "patterns": [
+    "레터링",
+    "그래픽",
+    "무지"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce5a5fa1d3434b2dd05906"
+  },
+  "clothes_id": 9,
+  "colors": [
+    "레드",
+    "브라운",
+    "오렌지"
+  ],
+  "s_category": "후드",
+  "materials": [
+    "그래픽",
+    "레터링",
+    "무지",
+    "체크"
+  ],
+  "patterns": [
+    "니트",
+    "데님",
+    "면",
+    "저지",
+    "코듀로이"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce5c6ba1d3434b2dd05907"
+  },
+  "clothes_id": 10,
+  "colors": [
+    "블루",
+    "네이비",
+    "그레이"
+  ],
+  "s_category": "셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "울/캐시미어"
+  ],
+  "patterns": [
+    "체크",
+    "카무플라쥬",
+    "스트라이프"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7af40306384a71048d3e"
+  },
+  "clothes_id": 11,
+  "colors": [
+    "그린",
+    "카키",
+    "민트"
+  ],
+  "s_category": "티셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "니트"
+  ],
+  "patterns": [
+    "스트라이프",
+    "무지",
+    "레터링"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7bfd0306384a71048d3f"
+  },
+  "clothes_id": 12,
+  "colors": [
+    "블루",
+    "네이비",
+    "블랙"
+  ],
+  "s_category": "청바지",
+  "materials": [
+    "데님",
+    "면",
+    "합성섬유"
+  ],
+  "patterns": [
+    "그라데이션",
+    "무지",
+    "타이다이"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7c1c0306384a71048d40"
+  },
+  "clothes_id": 13,
+  "colors": [
+    "화이트",
+    "블랙",
+    "베이지"
+  ],
+  "s_category": "긴바지",
+  "materials": [
+    "면",
+    "합성섬유",
+    "저지"
+  ],
+  "patterns": [
+    "무지",
+    "스트라이프",
+    "레터링"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7c3e0306384a71048d41"
+  },
+  "clothes_id": 14,
+  "colors": [
+    "블루",
+    "스카이블루",
+    "네이비"
+  ],
+  "s_category": "셔츠",
+  "materials": [
+    "데님",
+    "면",
+    "합성섬유"
+  ],
+  "patterns": [
+    "무지",
+    "그라데이션",
+    "타이다이"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7dc50306384a71048d42"
+  },
+  "clothes_id": 15,
+  "colors": [
+    "블랙",
+    "네이비",
+    "그레이"
+  ],
+  "s_category": "청바지",
+  "materials": [
+    "데님",
+    "면",
+    "합성섬유"
+  ],
+  "patterns": [
+    "무지",
+    "스트라이프",
+    "체크"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ce7e390306384a71048d43"
+  },
+  "clothes_id": 16,
+  "colors": [
+    "블랙",
+    "네이비",
+    "화이트"
+  ],
+  "s_category": "재킷",
+  "materials": [
+    "면",
+    "합성섬유",
+    "니트"
+  ],
+  "patterns": [
+    "그래픽",
+    "레터링",
+    "무지"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65ceafafc544124ce231c8c5"
+  },
+  "clothes_id": 17,
+  "colors": [
+    "브라운",
+    "그레이",
+    "카키"
+  ],
+  "s_category": "청바지",
+  "materials": [
+    "코듀로이",
+    "합성섬유",
+    "벨벳"
+  ],
+  "patterns": [
+    "무지",
+    "스트라이프",
+    "체크"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65cec0551428510c47b910e8"
+  },
+  "clothes_id": 18,
+  "colors": [
+    "블랙",
+    "네이비",
+    "그레이"
+  ],
+  "s_category": "티셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "저지"
+  ],
+  "patterns": [
+    "레터링",
+    "무지",
+    "그래픽"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65cec1731428510c47b910e9"
+  },
+  "clothes_id": 19,
+  "colors": [
+    "그레이",
+    "화이트",
+    "베이지"
+  ],
+  "s_category": "운동복",
+  "materials": [
+    "저지",
+    "면",
+    "합성섬유"
+  ],
+  "patterns": [
+    "무지",
+    "레터링",
+    "스트라이프"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65cec5daf25fa602d2fcbb88"
+  },
+  "clothes_id": 20,
+  "colors": [
+    "스카이블루",
+    "블루",
+    "퍼플"
+  ],
+  "s_category": "티셔츠",
+  "materials": [
+    "면",
+    "합성섬유",
+    "데님"
+  ],
+  "patterns": [
+    "무지",
+    "레터링",
+    "그라데이션"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+},
+{
+  "_id": {
+    "$oid": "65cec844f25fa602d2fcbb89"
+  },
+  "clothes_id": 21,
+  "colors": [
+    "블랙",
+    "그레이",
+    "브라운"
+  ],
+  "s_category": "재킷",
+  "materials": [
+    "가죽",
+    "합성섬유",
+    "비닐/PVC"
+  ],
+  "patterns": [
+    "무지",
+    "그라데이션",
+    "레터링"
+  ],
+  "_class": "com.cute.gawm.domain.clothes.entity.ClothesDetail"
+}]
