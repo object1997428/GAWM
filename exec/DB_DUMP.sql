@@ -1,380 +1,742 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
---
--- Host: k8b105.p.ssafy.io    Database: forest
--- ------------------------------------------------------
--- Server version	8.0.31
+-- --------------------------------------------------------
+-- 호스트:                          stg-yswa-kr-practice-db-master.mariadb.database.azure.com
+-- 서버 버전:                        10.3.23-MariaDB - MariaDB Server
+-- 서버 OS:                        Win64
+-- HeidiSQL 버전:                  12.3.0.6589
+-- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `cheering_msgs`
---
 
-DROP TABLE IF EXISTS `cheering_msgs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cheering_msgs` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` varchar(200) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- s10p12e203 데이터베이스 구조 내보내기
+CREATE DATABASE IF NOT EXISTS `s10p12e203` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
+USE `s10p12e203`;
 
---
--- Table structure for table `class_answer_rates`
---
+-- 테이블 s10p12e203.bookmark 구조 내보내기
+CREATE TABLE IF NOT EXISTS `bookmark` (
+  `bookmark_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `lookbook_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`bookmark_id`),
+  KEY `FKdccslqq82iio0jyswlwfbel8k` (`lookbook_id`),
+  KEY `FK3ogdxsxa4tx6vndyvpk1fk1am` (`user_id`),
+  CONSTRAINT `FK3ogdxsxa4tx6vndyvpk1fk1am` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `FKdccslqq82iio0jyswlwfbel8k` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `class_answer_rates`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `class_answer_rates` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `correct_rate` int NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `ungraded_rate` int NOT NULL DEFAULT '0',
-  `problem_list_id` bigint NOT NULL,
-  `study_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKi9ucta3dgafpijxigicadh3lj` (`problem_list_id`),
-  KEY `FKmdd47fjow82y116nl1i2vqx5u` (`study_id`),
-  CONSTRAINT `FKi9ucta3dgafpijxigicadh3lj` FOREIGN KEY (`problem_list_id`) REFERENCES `problem_lists` (`id`),
-  CONSTRAINT `FKmdd47fjow82y116nl1i2vqx5u` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=357 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.bookmark:~3 rows (대략적) 내보내기
+INSERT INTO `bookmark` (`bookmark_id`, `created_at`, `lookbook_id`, `user_id`) VALUES
+	(1, '2024-02-16 05:18:50.937000', 11, 2),
+	(2, '2024-02-16 05:40:05.056000', 12, 2),
+	(3, '2024-02-16 02:18:59.871000', 27, 2);
 
---
--- Table structure for table `class_study_results`
---
+-- 테이블 s10p12e203.clothes 구조 내보내기
+CREATE TABLE IF NOT EXISTS `clothes` (
+  `clothes_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `brand` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `clothes_img` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `m_category` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `order_num` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`clothes_id`),
+  KEY `FKciuihnqiq0t44yg7jyow95iqg` (`user_id`),
+  CONSTRAINT `FKciuihnqiq0t44yg7jyow95iqg` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `class_study_results`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `class_study_results` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `average` double DEFAULT NULL,
-  `average_solving_time` bigint DEFAULT NULL,
-  `correct_answer_rate` int DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `participant_student` int DEFAULT NULL,
-  `standard_deviation` double DEFAULT NULL,
-  `take_rate` int DEFAULT NULL,
-  `total_student` int DEFAULT NULL,
-  `ungraded_answer_rate` int DEFAULT NULL,
-  `study_id` bigint NOT NULL,
-  `is_finished` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FKrml6bgrd9jvav45j7cbn6mo40` (`study_id`),
-  CONSTRAINT `FKrml6bgrd9jvav45j7cbn6mo40` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.clothes:~21 rows (대략적) 내보내기
+INSERT INTO `clothes` (`clothes_id`, `created_at`, `is_deleted`, `updated_at`, `brand`, `clothes_img`, `m_category`, `name`, `order_num`, `user_id`) VALUES
+	(1, '2024-02-16 01:58:16.518000', b'0', '2024-02-16 01:58:16.518000', '빅유니온', '7142f198-a7dc-4065-8dec-899188339115.png', '아우터', '봄잠바', 1, 2),
+	(2, '2024-02-16 02:01:10.200000', b'0', '2024-02-16 02:01:10.200000', '에스피오나지', '2905243f-bd37-4b8b-967e-b70029f268c0.png', '아우터', '두꺼운잠바', 2, 2),
+	(3, '2024-02-16 02:05:23.529000', b'1', '2024-02-16 02:43:47.296000', '어반스터프', 'c70590ab-e4ec-4cec-b5f9-02a7d528aa62.png', '바지', '청바지', 3, 2),
+	(4, '2024-02-16 02:44:33.181000', b'0', '2024-02-16 02:44:33.181000', 'SWIB', '8f0d63b4-41e9-4819-8221-67f966551e1b.png', '아우터', '가을잠바', 4, 2),
+	(5, '2024-02-16 02:45:54.184000', b'0', '2024-02-16 02:45:54.184000', '디미트리블랙', '88f93163-b40d-4862-af39-086b2e50b848.png', '상의', '슬리브티', 5, 2),
+	(6, '2024-02-16 02:46:55.352000', b'1', '2024-02-16 03:37:46.358000', '모멘트오브글로리', 'f4f91e06-2d56-416d-8a9c-f8e641dab12d.png', '상의', '니트티', 6, 2),
+	(7, '2024-02-16 02:48:05.824000', b'0', '2024-02-16 02:48:05.824000', '굿라이프웍스', 'fed11f11-0b6e-444c-a14b-e673478e3901.png', '바지', '오버사이즈면바지', 7, 2),
+	(8, '2024-02-16 03:38:30.806000', b'0', '2024-02-16 03:38:30.806000', '포이스닝', '9730a332-6c69-4a4e-936e-ffb0b0fc02ed.png', '상의', '기본맨투맨', 8, 2),
+	(9, '2024-02-16 03:39:27.236000', b'0', '2024-02-16 03:39:27.236000', '톤즈', 'c9a12614-38d2-41c3-8fe7-e1a7bdc2698c.png', '상의', '후드티', 9, 2),
+	(10, '2024-02-16 03:48:11.164000', b'0', '2024-02-16 03:48:11.164000', '공대', 'e135be93-10c5-496f-a6a2-2f1663282607.png', '상의', '공대셔츠', 10, 2),
+	(11, '2024-02-16 05:58:28.210000', b'0', '2024-02-16 05:58:28.211000', '기준', 'e6640c44-2694-4a59-b5a6-d82c36a2a5ef.png', '상의', '피케티', 11, 2),
+	(12, '2024-02-16 06:02:53.078000', b'0', '2024-02-16 06:02:53.078000', '디스퀘어드', 'c2ed706c-a1d3-43bd-a4d4-f8f2a21c80fa.png', '바지', '진하고노란청', 12, 2),
+	(13, '2024-02-16 06:03:24.629000', b'0', '2024-02-16 06:03:24.629000', '보세', '81676f53-ede7-4d05-801a-be26b62b8270.png', '바지', '뺵바지', 13, 2),
+	(14, '2024-02-16 06:03:58.329000', b'0', '2024-02-16 06:03:58.329000', '보세', '87e43935-ff0d-48f4-a451-e9f8ab67f869.png', '상의', '청셔츠', 14, 2),
+	(15, '2024-02-16 06:10:29.273000', b'0', '2024-02-16 06:10:29.273000', '보세', '1cada9bd-1ca6-4ab5-90fb-98b5daa202fb.png', '바지', '검청', 15, 2),
+	(16, '2024-02-16 06:12:25.564000', b'0', '2024-02-16 06:12:25.564000', '엑스톤즈', '11965d14-1602-4475-b3d4-e90a05375fa0.png', '아우터', '수베니어 집업', 16, 2),
+	(17, '2024-02-16 00:43:27.500000', b'0', '2024-02-16 00:43:27.500000', '보세', '06ec62ce-9846-4582-8264-451953dfc00a.png', '바지', '청바지', 17, 2),
+	(18, '2024-02-16 01:54:29.076000', b'0', '2024-02-16 01:54:29.076000', 'DEUS', '361dbf05-b233-42a0-8a2b-58271b415bc7.png', '상의', '무지반팔', 18, 2),
+	(19, '2024-02-16 01:59:14.981000', b'0', '2024-02-16 01:59:14.981000', '보세', 'ecf114ec-3332-451e-812f-6088456eceba.png', '바지', '츄리닝바지', 19, 2),
+	(20, '2024-02-16 02:18:02.067000', b'0', '2024-02-16 02:18:02.067000', 'dldls', '4221a65f-270d-4f65-961d-db707ab4870b.png', '상의', 'cjd', 1, 11),
+	(21, '2024-02-16 02:28:20.041000', b'0', '2024-02-16 02:28:20.041000', '노스페이스', 'e6de0eec-7c51-459a-b649-07dd72ceb2d2.png', '아우터', '가죽잠바', 20, 2);
 
---
--- Table structure for table `class_users`
---
+-- 테이블 s10p12e203.clothes_lookbook 구조 내보내기
+CREATE TABLE IF NOT EXISTS `clothes_lookbook` (
+  `clothes_lookbook_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `clothes_id` int(11) DEFAULT NULL,
+  `lookbook_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`clothes_lookbook_id`),
+  KEY `FKiesinyanf49ap1w4nrtnlpg2g` (`clothes_id`),
+  KEY `FKdamnh77gq9nxvcl4cx6gdgg6e` (`lookbook_id`),
+  CONSTRAINT `FKdamnh77gq9nxvcl4cx6gdgg6e` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`),
+  CONSTRAINT `FKiesinyanf49ap1w4nrtnlpg2g` FOREIGN KEY (`clothes_id`) REFERENCES `clothes` (`clothes_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `class_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `class_users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `class_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK986u17ogt99rvrd5gumq16s6f` (`class_id`),
-  KEY `FKltoe9fc3cw9lrjqy9f4aytjoc` (`user_id`),
-  CONSTRAINT `FK986u17ogt99rvrd5gumq16s6f` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
-  CONSTRAINT `FKltoe9fc3cw9lrjqy9f4aytjoc` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.clothes_lookbook:~24 rows (대략적) 내보내기
+INSERT INTO `clothes_lookbook` (`clothes_lookbook_id`, `created_at`, `is_deleted`, `updated_at`, `clothes_id`, `lookbook_id`) VALUES
+	(40, '2024-02-16 03:57:07.605000', b'0', '2024-02-16 03:57:07.605000', 2, 1),
+	(41, '2024-02-16 03:57:07.650000', b'0', '2024-02-16 03:57:07.650000', 1, 1),
+	(42, '2024-02-16 05:01:18.589000', b'0', '2024-02-16 05:01:18.589000', 4, 3),
+	(43, '2024-02-16 05:01:18.633000', b'0', '2024-02-16 05:01:18.633000', 8, 3),
+	(44, '2024-02-16 05:01:18.674000', b'0', '2024-02-16 05:01:18.674000', 7, 3),
+	(45, '2024-02-16 05:01:42.164000', b'0', '2024-02-16 05:01:42.164000', 2, 5),
+	(46, '2024-02-16 05:39:53.875000', b'0', '2024-02-16 05:39:53.875000', 1, 12),
+	(47, '2024-02-16 05:39:53.915000', b'0', '2024-02-16 05:39:53.916000', 2, 12),
+	(48, '2024-02-16 05:39:53.956000', b'0', '2024-02-16 05:39:53.956000', 4, 12),
+	(49, '2024-02-16 05:39:53.996000', b'0', '2024-02-16 05:39:53.996000', 5, 12),
+	(50, '2024-02-16 05:39:54.036000', b'0', '2024-02-16 05:39:54.036000', 8, 12),
+	(51, '2024-02-16 05:39:54.076000', b'0', '2024-02-16 05:39:54.076000', 9, 12),
+	(52, '2024-02-16 05:39:54.116000', b'0', '2024-02-16 05:39:54.116000', 7, 12),
+	(53, '2024-02-16 06:07:07.791000', b'0', '2024-02-16 06:07:07.791000', 1, 13),
+	(54, '2024-02-16 06:07:07.831000', b'0', '2024-02-16 06:07:07.831000', 11, 13),
+	(55, '2024-02-16 06:07:07.871000', b'0', '2024-02-16 06:07:07.871000', 12, 13),
+	(56, '2024-02-16 06:07:37.111000', b'0', '2024-02-16 06:07:37.111000', 13, 15),
+	(57, '2024-02-16 06:07:37.152000', b'0', '2024-02-16 06:07:37.152000', 9, 15),
+	(58, '2024-02-16 06:10:47.884000', b'0', '2024-02-16 06:10:47.884000', 11, 20),
+	(59, '2024-02-16 06:10:47.923000', b'0', '2024-02-16 06:10:47.924000', 15, 20),
+	(60, '2024-02-16 06:12:47.764000', b'0', '2024-02-16 06:12:47.764000', 16, 24),
+	(61, '2024-02-16 06:12:47.805000', b'0', '2024-02-16 06:12:47.805000', 15, 24),
+	(62, '2024-02-16 06:14:14.705000', b'0', '2024-02-16 06:14:14.705000', 2, 26),
+	(63, '2024-02-16 06:14:14.755000', b'0', '2024-02-16 06:14:14.755000', 7, 26);
 
---
--- Table structure for table `classes`
---
+-- 테이블 s10p12e203.clothes_stylelog 구조 내보내기
+CREATE TABLE IF NOT EXISTS `clothes_stylelog` (
+  `clothes_stylelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `rotate` double NOT NULL,
+  `size` double NOT NULL,
+  `x` double NOT NULL,
+  `y` double NOT NULL,
+  `clothes_id` int(11) DEFAULT NULL,
+  `stylelog_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`clothes_stylelog_id`),
+  KEY `FKjfdmk9ap5t0tvh50yex9boqpk` (`clothes_id`),
+  KEY `FKohnrlsj84h9q7ngq9crkqg734` (`stylelog_id`),
+  CONSTRAINT `FKjfdmk9ap5t0tvh50yex9boqpk` FOREIGN KEY (`clothes_id`) REFERENCES `clothes` (`clothes_id`),
+  CONSTRAINT `FKohnrlsj84h9q7ngq9crkqg734` FOREIGN KEY (`stylelog_id`) REFERENCES `stylelog` (`stylelog_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `classes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `classes` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `created_date` datetime(6) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `name` varchar(20) NOT NULL,
-  `owner_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK84apqx2jc7pdcfc8d16hvklt1` (`owner_id`),
-  CONSTRAINT `FK84apqx2jc7pdcfc8d16hvklt1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.clothes_stylelog:~8 rows (대략적) 내보내기
+INSERT INTO `clothes_stylelog` (`clothes_stylelog_id`, `created_at`, `is_deleted`, `updated_at`, `rotate`, `size`, `x`, `y`, `clothes_id`, `stylelog_id`) VALUES
+	(1, '2024-02-16 04:14:04.439000', b'0', '2024-02-16 04:14:04.439000', 0, 0.4, 179.1253173828125, 167.69640502929687, 7, 1),
+	(2, '2024-02-16 04:14:04.463000', b'0', '2024-02-16 04:14:04.463000', 0, 0.22, 209.21012084960938, 34.25832336425781, 8, 1),
+	(3, '2024-02-16 04:14:04.482000', b'0', '2024-02-16 04:14:04.482000', 0, 0.28, 10.650604248046875, -11.821676635742193, 1, 1),
+	(4, '2024-02-16 04:14:26.513000', b'0', '2024-02-16 04:14:26.513000', 0, 0.4, 198.18797607421874, 112.27471313476562, 5, 2),
+	(5, '2024-02-16 04:14:26.533000', b'0', '2024-02-16 04:14:26.533000', 0, 0.4, 12.860241699218747, 109.86507568359374, 2, 2),
+	(6, '2024-02-16 02:00:49.210000', b'0', '2024-02-16 02:00:49.210000', 0, 0.31, 107.19078125, 176.8275, 19, 3),
+	(7, '2024-02-16 02:00:49.221000', b'0', '2024-02-16 02:00:49.221000', 0, 0.25, 123.517578125, 59.375, 18, 3),
+	(8, '2024-02-16 02:29:27.177000', b'0', '2024-02-16 02:29:27.177000', 0, 0.25, 66.064453125, 54.296875, 21, 4);
 
---
--- Table structure for table `items`
---
+-- 테이블 s10p12e203.colors_tag 구조 내보내기
+CREATE TABLE IF NOT EXISTS `colors_tag` (
+  `name` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `colorCode` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `color_code` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `items`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `items` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` varchar(200) DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `is_image` tinyint(1) NOT NULL DEFAULT '0',
-  `no` int NOT NULL,
-  `problem_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK849vhdoe3bbkyehsryrin1yf3` (`problem_id`),
-  CONSTRAINT `FK849vhdoe3bbkyehsryrin1yf3` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=559 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.colors_tag:~16 rows (대략적) 내보내기
+INSERT INTO `colors_tag` (`name`, `colorCode`, `color_code`) VALUES
+	('그레이', 'Grey', NULL),
+	('그린', 'Green', NULL),
+	('네이비', 'Navy', NULL),
+	('라벤더', 'Lavender', NULL),
+	('레드', 'Red', NULL),
+	('민트', 'Mint', NULL),
+	('베이지', 'Beige', NULL),
+	('브라운', 'Brown', NULL),
+	('블랙', 'Black', NULL),
+	('블루', 'Blue', NULL),
+	('스카이블루', 'Skyblue', NULL),
+	('오렌지', 'Orange', NULL),
+	('카키', 'Khaki', NULL),
+	('퍼플', 'Purple', NULL),
+	('핑크', 'Pink', NULL),
+	('화이트', 'White', NULL);
 
---
--- Table structure for table `memos`
---
+-- 테이블 s10p12e203.comment 구조 내보내기
+CREATE TABLE IF NOT EXISTS `comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `content` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `lookbook_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `FK9nueroe1pk0ue7hoerga4b492` (`lookbook_id`),
+  KEY `FK8kcum44fvpupyw6f5baccx25c` (`user_id`),
+  CONSTRAINT `FK8kcum44fvpupyw6f5baccx25c` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `FK9nueroe1pk0ue7hoerga4b492` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `memos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `memos` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) DEFAULT NULL,
-  `created_date` datetime(6) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `updated_date` datetime(6) NOT NULL,
-  `user_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKjfl1v48y7d1vlk2jw1qqm3x42` (`user_id`),
-  CONSTRAINT `FKjfl1v48y7d1vlk2jw1qqm3x42` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.comment:~14 rows (대략적) 내보내기
+INSERT INTO `comment` (`comment_id`, `created_at`, `is_deleted`, `updated_at`, `content`, `lookbook_id`, `user_id`) VALUES
+	(1, '2024-02-16 05:23:00.201000', b'0', '2024-02-16 05:23:00.201000', 'ㅎㅇ', 11, 2),
+	(2, '2024-02-16 05:25:13.007000', b'0', '2024-02-16 05:25:13.007000', 'ㅀㅇㄹ', 11, 2),
+	(3, '2024-02-16 05:25:15.068000', b'0', '2024-02-16 05:25:15.068000', 'ㅀㅇㄹ', 11, 2),
+	(4, '2024-02-16 05:25:17.757000', b'0', '2024-02-16 05:25:17.757000', 'ㅀㅇㄹ', 11, 2),
+	(5, '2024-02-16 05:25:17.988000', b'0', '2024-02-16 05:25:17.988000', 'ㅀㅇㄹ', 11, 2),
+	(6, '2024-02-16 05:25:18.238000', b'0', '2024-02-16 05:25:18.238000', 'ㅀㅇㄹ', 11, 2),
+	(7, '2024-02-16 05:25:18.548000', b'0', '2024-02-16 05:25:18.548000', 'ㅀㅇㄹ', 11, 2),
+	(8, '2024-02-16 05:25:18.787000', b'0', '2024-02-16 05:25:18.787000', 'ㅀㅇㄹ', 11, 2),
+	(9, '2024-02-16 05:25:19.148000', b'0', '2024-02-16 05:25:19.148000', 'ㅀㅇㄹ', 11, 2),
+	(10, '2024-02-16 05:25:19.488000', b'0', '2024-02-16 05:25:19.488000', 'ㅀㅇㄹ', 11, 2),
+	(11, '2024-02-16 05:25:19.588000', b'0', '2024-02-16 05:25:19.588000', 'ㅀㅇㄹ', 11, 2),
+	(12, '2024-02-16 05:25:19.898000', b'0', '2024-02-16 05:25:19.898000', 'ㅀㅇㄹ', 11, 2),
+	(13, '2024-02-16 05:27:42.229000', b'0', '2024-02-16 05:27:42.229000', '', 11, 2),
+	(14, '2024-02-16 02:17:31.993000', b'0', '2024-02-16 02:17:31.993000', '멋져요', 27, 2);
 
---
--- Table structure for table `problem_lists`
---
+-- 테이블 s10p12e203.image 구조 내보내기
+CREATE TABLE IF NOT EXISTS `image` (
+  `image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`image_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `problem_lists`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `problem_lists` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `problem_num` int NOT NULL,
-  `problem_id` bigint NOT NULL,
-  `workbook_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKc55yqws5nrtdx0p5g5ecfpyxu` (`problem_id`),
-  KEY `FKpx9am4bdn1p1sww7jy6vcs27t` (`workbook_id`),
-  CONSTRAINT `FKc55yqws5nrtdx0p5g5ecfpyxu` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`),
-  CONSTRAINT `FKpx9am4bdn1p1sww7jy6vcs27t` FOREIGN KEY (`workbook_id`) REFERENCES `workbooks` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.image:~0 rows (대략적) 내보내기
 
---
--- Table structure for table `problems`
---
+-- 테이블 s10p12e203.likes 구조 내보내기
+CREATE TABLE IF NOT EXISTS `likes` (
+  `like_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lookbook_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`like_id`),
+  KEY `FK44ksad743g3o1g17891tumvpo` (`lookbook_id`),
+  KEY `FKi2wo4dyk4rok7v4kak8sgkwx0` (`user_id`),
+  CONSTRAINT `FK44ksad743g3o1g17891tumvpo` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`),
+  CONSTRAINT `FKi2wo4dyk4rok7v4kak8sgkwx0` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `problems`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `problems` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `answer` text,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `path` varchar(255) DEFAULT NULL,
-  `point` int NOT NULL,
-  `text` text,
-  `title` text,
-  `type` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.likes:~4 rows (대략적) 내보내기
+INSERT INTO `likes` (`like_id`, `lookbook_id`, `user_id`) VALUES
+	(2, 3, 2),
+	(3, 1, 2),
+	(6, 11, 2),
+	(7, 12, 2);
 
---
--- Table structure for table `student_study_problem_results`
---
+-- 테이블 s10p12e203.live 구조 내보내기
+CREATE TABLE IF NOT EXISTS `live` (
+  `live_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `after_img` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `before_img` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `is_public` bit(1) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `point` int(11) DEFAULT NULL,
+  `session` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`live_id`),
+  KEY `FKi73cx2sae1bgw8jgyyppio1og` (`user_id`),
+  CONSTRAINT `FKi73cx2sae1bgw8jgyyppio1og` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `student_study_problem_results`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student_study_problem_results` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `is_corrected` tinyint(1) NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `is_graded` tinyint(1) NOT NULL DEFAULT '0',
-  `part_point` int NOT NULL DEFAULT '0',
-  `user_answer` varchar(255) DEFAULT NULL,
-  `problem_list_id` bigint NOT NULL,
-  `study_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKi05g9rh50ow474lgy9ek9sqc8` (`problem_list_id`),
-  KEY `FK931mcq6s4vdlvlylyhxqbx230` (`study_id`),
-  KEY `FKp0hdu6lt1ch80gdsyx8cjk0dg` (`user_id`),
-  CONSTRAINT `FK931mcq6s4vdlvlylyhxqbx230` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`),
-  CONSTRAINT `FKi05g9rh50ow474lgy9ek9sqc8` FOREIGN KEY (`problem_list_id`) REFERENCES `problem_lists` (`id`),
-  CONSTRAINT `FKp0hdu6lt1ch80gdsyx8cjk0dg` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=724 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.live:~7 rows (대략적) 내보내기
+INSERT INTO `live` (`live_id`, `created_at`, `is_deleted`, `updated_at`, `after_img`, `before_img`, `is_public`, `name`, `point`, `session`, `user_id`) VALUES
+	(52, '2024-02-16 06:02:42.905000', b'0', '2024-02-16 06:02:42.905000', NULL, NULL, b'1', '26C 라이브 이름', 10, 'SessionA', 4),
+	(66, '2024-02-16 07:05:09.723000', b'0', '2024-02-16 07:05:09.723000', NULL, NULL, b'0', 'spsps', 10, 'SessionA', 7),
+	(67, '2024-02-16 07:05:24.055000', b'0', '2024-02-16 07:05:24.055000', NULL, NULL, b'1', 'sss', 10, 'SessionA', 7),
+	(71, '2024-02-16 09:27:46.787000', b'0', '2024-02-16 09:27:46.787000', NULL, NULL, b'1', '1111111111111111111111', 10, 'SessionAsfsfse', 3),
+	(74, '2024-02-16 02:15:38.490000', b'0', '2024-02-16 02:15:38.490000', NULL, NULL, b'1', 'D', 10, 'SessionA', 2),
+	(75, '2024-02-16 02:15:52.047000', b'0', '2024-02-16 02:15:52.047000', NULL, NULL, b'1', 'ddd', 10, 'SessionA', 11),
+	(77, '2024-02-16 11:48:48.216000', b'0', '2024-02-16 11:48:48.216000', NULL, NULL, b'1', '방123', 10, 'SessionA', 1);
 
---
--- Table structure for table `student_study_results`
---
+-- 테이블 s10p12e203.lookbook 구조 내보내기
+CREATE TABLE IF NOT EXISTS `lookbook` (
+  `lookbook_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `is_public` bit(1) DEFAULT NULL,
+  `view` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`lookbook_id`),
+  KEY `FK7kxcqwbhdk4lbbifd1dsaxu7n` (`user_id`),
+  CONSTRAINT `FK7kxcqwbhdk4lbbifd1dsaxu7n` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `student_study_results`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student_study_results` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `correct_num` int NOT NULL DEFAULT '0',
-  `correct_rate` int NOT NULL DEFAULT '0',
-  `enter_time` timestamp NULL DEFAULT NULL,
-  `exit_time` timestamp NULL DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `is_graded` tinyint(1) NOT NULL DEFAULT '0',
-  `score` int NOT NULL DEFAULT '0',
-  `study_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  `is_submitted` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FKiiienf9o8rn38c21xuko8185t` (`study_id`),
-  KEY `FKovxfw9rmdmb76m7brlnuw15h1` (`user_id`),
-  CONSTRAINT `FKiiienf9o8rn38c21xuko8185t` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`),
-  CONSTRAINT `FKovxfw9rmdmb76m7brlnuw15h1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.lookbook:~27 rows (대략적) 내보내기
+INSERT INTO `lookbook` (`lookbook_id`, `created_at`, `is_deleted`, `updated_at`, `is_public`, `view`, `user_id`) VALUES
+	(1, '2024-02-16 03:57:07.224000', b'0', '2024-02-16 03:57:07.224000', b'1', 0, 2),
+	(2, '2024-02-16 05:01:12.582000', b'0', '2024-02-16 05:01:12.582000', b'0', 0, 5),
+	(3, '2024-02-16 05:01:17.999000', b'0', '2024-02-16 05:01:17.999000', b'1', 0, 2),
+	(4, '2024-02-16 05:01:29.622000', b'0', '2024-02-16 05:01:29.622000', b'0', 0, 5),
+	(5, '2024-02-16 05:01:41.783000', b'0', '2024-02-16 05:01:41.783000', b'0', 0, 2),
+	(6, '2024-02-16 05:02:14.550000', b'0', '2024-02-16 05:02:14.550000', b'0', 0, 5),
+	(7, '2024-02-16 05:02:33.066000', b'0', '2024-02-16 05:02:33.066000', b'1', 0, 5),
+	(8, '2024-02-16 05:02:56.918000', b'0', '2024-02-16 05:02:56.918000', b'0', 0, 5),
+	(9, '2024-02-16 05:03:16.714000', b'0', '2024-02-16 05:03:16.714000', b'0', 0, 5),
+	(10, '2024-02-16 05:03:45.383000', b'0', '2024-02-16 05:03:45.383000', b'0', 0, 5),
+	(11, '2024-02-16 05:07:46.612000', b'0', '2024-02-16 05:07:46.612000', b'1', 0, 5),
+	(12, '2024-02-16 05:39:53.566000', b'0', '2024-02-16 05:39:53.566000', b'1', 0, 2),
+	(13, '2024-02-16 06:07:07.271000', b'0', '2024-02-16 06:07:07.271000', b'1', 0, 2),
+	(14, '2024-02-16 06:07:25.178000', b'0', '2024-02-16 06:07:25.178000', b'0', 0, 6),
+	(15, '2024-02-16 06:07:36.833000', b'0', '2024-02-16 06:07:36.833000', b'1', 0, 2),
+	(16, '2024-02-16 06:07:58.978000', b'0', '2024-02-16 06:07:58.978000', b'1', 0, 6),
+	(17, '2024-02-16 06:08:41.180000', b'0', '2024-02-16 06:08:41.180000', b'1', 0, 6),
+	(18, '2024-02-16 06:09:48.125000', b'0', '2024-02-16 06:09:48.125000', b'1', 0, 6),
+	(19, '2024-02-16 06:10:16.640000', b'0', '2024-02-16 06:10:16.640000', b'1', 0, 6),
+	(20, '2024-02-16 06:10:47.553000', b'0', '2024-02-16 06:10:47.553000', b'1', 0, 2),
+	(21, '2024-02-16 06:10:51.215000', b'0', '2024-02-16 06:10:51.215000', b'1', 0, 6),
+	(22, '2024-02-16 06:12:02.970000', b'0', '2024-02-16 06:12:02.970000', b'1', 0, 6),
+	(23, '2024-02-16 06:12:23.743000', b'0', '2024-02-16 06:12:23.743000', b'1', 0, 6),
+	(24, '2024-02-16 06:12:47.454000', b'0', '2024-02-16 06:12:47.455000', b'1', 0, 2),
+	(25, '2024-02-16 06:12:53.853000', b'0', '2024-02-16 06:12:53.853000', b'0', 0, 6),
+	(26, '2024-02-16 06:14:14.235000', b'0', '2024-02-16 06:14:14.235000', b'1', 0, 2),
+	(27, '2024-02-16 09:44:15.946000', b'0', '2024-02-16 09:44:15.946000', b'1', 0, 9);
 
---
--- Table structure for table `studies`
---
+-- 테이블 s10p12e203.lookbook_image 구조 내보내기
+CREATE TABLE IF NOT EXISTS `lookbook_image` (
+  `lookbook_image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `lookbook_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`lookbook_image_id`),
+  KEY `FKbvq7l5br5nqhvh4w93fohrvn5` (`lookbook_id`),
+  CONSTRAINT `FKbvq7l5br5nqhvh4w93fohrvn5` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `studies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `studies` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `class_id` bigint NOT NULL,
-  `user_id` bigint NOT NULL,
-  `workbook_id` bigint NOT NULL,
-  `type` varchar(10) DEFAULT 'SELF',
-  `name` varchar(20) NOT NULL,
-  `start_time` timestamp NULL DEFAULT NULL,
-  `end_time` timestamp NULL DEFAULT NULL,
-  `created_date` datetime(6) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FKnecvpbfhqa0s28c75thgy4bou` (`class_id`),
-  KEY `FK41fw82vd9facxwi6k68q0cu53` (`user_id`),
-  KEY `FKak1464finuo2oaj5t90w41tla` (`workbook_id`),
-  CONSTRAINT `FK41fw82vd9facxwi6k68q0cu53` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `FKak1464finuo2oaj5t90w41tla` FOREIGN KEY (`workbook_id`) REFERENCES `workbooks` (`id`),
-  CONSTRAINT `FKnecvpbfhqa0s28c75thgy4bou` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.lookbook_image:~27 rows (대략적) 내보내기
+INSERT INTO `lookbook_image` (`lookbook_image_id`, `image_url`, `lookbook_id`) VALUES
+	(1, '1aa79241-f621-479e-870f-d537702ef737.webp', 1),
+	(2, '3f7b7bca-88c5-42da-b2a8-10bb521f8496.png', 2),
+	(3, '34acc2e0-86de-44c3-87cb-79f607caab95.png', 3),
+	(4, '5ee89fd6-3025-40af-bd89-475d6a6289a9.png', 4),
+	(5, 'ee1fb05d-cfc5-4b6a-ad11-8b45085bca46.png', 5),
+	(6, 'f09d0457-1024-4d2c-9104-92ef31deccfe.jpg', 6),
+	(7, '21504071-dce0-47c0-b3b0-5d8141719617.jpg', 7),
+	(8, '4a91a0f5-21a0-4287-b7dc-45e299d5d526.jpeg', 8),
+	(9, '1729a368-3569-4cac-829c-78b4a59644ae.jpg', 9),
+	(10, 'd7fb11bb-b2a3-48bb-8c5d-6c7819d7c4bd.png', 10),
+	(11, '92ae1b6c-c48b-4df8-b741-6cc0c64435e7.jpg', 11),
+	(12, 'bd003027-1102-481e-8d9d-249a9b1c5305.jpg', 12),
+	(13, '1b007851-3628-4b07-a50b-129140b78de7.jpg', 13),
+	(14, 'b0c7cf2c-b761-488b-b8b0-4269521f450d.jpg', 14),
+	(15, '85039c56-a60f-404b-a4ca-7ab44d0c9a7a.jpg', 15),
+	(16, 'ac1417a7-9637-40b4-ad58-11372f06654b.jpg', 16),
+	(17, '9b25df04-81f7-44f7-90d2-02e0986812ae.jpg', 17),
+	(18, '26ccab5a-c497-4398-9357-8e6782028600.jpg', 18),
+	(19, 'd8b15609-a69e-46d4-9ef9-b2a76d671b62.jpg', 19),
+	(20, 'd41179ff-2aef-49b0-972a-e87d93266822.jpg', 20),
+	(21, '617a0d55-2f73-4851-8606-a48a431a1b7f.jpg', 21),
+	(22, '64b998ae-4d2a-4353-a8e3-bce247124249.jpg', 22),
+	(23, '293bde69-dd2f-4103-8cd8-5c5581393000.jpg', 23),
+	(24, 'af509293-02d6-4faa-bcfe-dcdb45a7d157.jpg', 24),
+	(25, 'f69defba-0bfd-4bc7-aea0-b97e0079e5f5.jpg', 25),
+	(26, 'ceff7728-4426-45aa-8534-774faa832e68.jpg', 26),
+	(27, '2e645f11-db97-4a1e-8336-adfd28785e26.png', 27);
 
---
--- Table structure for table `user_workbooks`
---
+-- 테이블 s10p12e203.materials_tag 구조 내보내기
+CREATE TABLE IF NOT EXISTS `materials_tag` (
+  `name` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `user_workbooks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_workbooks` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` bigint NOT NULL,
-  `workbook_id` bigint NOT NULL,
-  `is_bookmarked` tinyint(1) NOT NULL DEFAULT '0',
-  `is_scraped` tinyint(1) NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FKoak66oi7p622exxcbovu8emnv` (`user_id`),
-  KEY `FKs8862d4beo81s1vq1b3r9issn` (`workbook_id`),
-  CONSTRAINT `FKoak66oi7p622exxcbovu8emnv` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `FKs8862d4beo81s1vq1b3r9issn` FOREIGN KEY (`workbook_id`) REFERENCES `workbooks` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.materials_tag:~13 rows (대략적) 내보내기
+INSERT INTO `materials_tag` (`name`) VALUES
+	('가죽'),
+	('네오프렌'),
+	('니트'),
+	('데님'),
+	('면'),
+	('벨벳'),
+	('비닐/PVC'),
+	('스웨이드'),
+	('앙고라'),
+	('울/캐시미어'),
+	('저지'),
+	('코듀로이'),
+	('합성섬유');
 
---
--- Table structure for table `users`
---
+-- 테이블 s10p12e203.patterns_tag 구조 내보내기
+CREATE TABLE IF NOT EXISTS `patterns_tag` (
+  `name` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `auth_provider` varchar(10) DEFAULT 'LOCAL',
-  `role` varchar(10) DEFAULT 'STUDENT',
-  `email` varchar(50) NOT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `birth` date DEFAULT NULL,
-  `password` varchar(60) DEFAULT NULL,
-  `refresh_token` varchar(255) DEFAULT NULL,
-  `created_date` datetime(6) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.patterns_tag:~10 rows (대략적) 내보내기
+INSERT INTO `patterns_tag` (`name`) VALUES
+	('그라데이션'),
+	('그래픽'),
+	('레터링'),
+	('무지'),
+	('스트라이프'),
+	('지그재그'),
+	('체크'),
+	('카무플라쥬'),
+	('타이다이'),
+	('호피');
 
---
--- Table structure for table `workbook_imgs`
---
+-- 테이블 s10p12e203.spring_session 구조 내보내기
+CREATE TABLE IF NOT EXISTS `spring_session` (
+  `PRIMARY_ID` char(36) COLLATE utf8mb4_bin NOT NULL,
+  `SESSION_ID` char(36) COLLATE utf8mb4_bin NOT NULL,
+  `CREATION_TIME` bigint(20) NOT NULL,
+  `LAST_ACCESS_TIME` bigint(20) NOT NULL,
+  `MAX_INACTIVE_INTERVAL` int(11) NOT NULL,
+  `EXPIRY_TIME` bigint(20) NOT NULL,
+  `PRINCIPAL_NAME` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`PRIMARY_ID`),
+  UNIQUE KEY `SPRING_SESSION_IX1` (`SESSION_ID`),
+  KEY `SPRING_SESSION_IX2` (`EXPIRY_TIME`),
+  KEY `SPRING_SESSION_IX3` (`PRINCIPAL_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
-DROP TABLE IF EXISTS `workbook_imgs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `workbook_imgs` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `path` varchar(255) DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- 테이블 데이터 s10p12e203.spring_session:~35 rows (대략적) 내보내기
+INSERT INTO `spring_session` (`PRIMARY_ID`, `SESSION_ID`, `CREATION_TIME`, `LAST_ACCESS_TIME`, `MAX_INACTIVE_INTERVAL`, `EXPIRY_TIME`, `PRINCIPAL_NAME`) VALUES
+	('0837f7ae-0ff9-4f51-85ea-a7686cbbede5', '2a88f5ce-b67c-43f8-aa21-6e520cf1b802', 1708049130636, 1708050753099, 1440000000, 3148050753099, '3319904590'),
+	('19ae87b6-7be3-4283-a41b-cb668ae3567e', '699a2638-7d0f-4e34-8cdb-628dad3a8527', 1708040371426, 1708052562516, 1440000000, 3148052562516, '106486212139354441133'),
+	('1c19dad8-218b-4aa2-b27b-94e359279dcb', 'fd55650a-4de7-43b7-92cc-2e9550926e3a', 1708047499855, 1708048862145, 1440000000, 3148048862145, '3319904590'),
+	('2c6d2b55-7cb4-4d99-a275-000ebad14f59', 'ef5575ce-ad04-41ff-a5b2-42f14fd36d10', 1708022275344, 1708040030447, 1440000000, 3148040030447, '3294935336'),
+	('2d366475-5f0f-4e8a-bfab-ed06b529f2bd', '405e0368-a656-4b5b-bcd7-8568726bcaf4', 1708045232471, 1708045362929, 1440000000, 3148045362929, '116921118279063541992'),
+	('3fdd0e68-cd96-4bba-9328-8bf799523a1a', '7be681cf-d3cf-40b9-bde9-bd74cab16d71', 1708022248440, 1708028180457, 1440000000, 3148028180457, '106486212139354441133'),
+	('559b7b39-47d8-4644-98c7-cb1c09837fe7', '9d2919b4-06db-4506-8622-7beee10da8ba', 1708040963782, 1708042397108, 1440000000, 3148042397108, '3319904590'),
+	('57fa7348-8b8f-4438-b12b-4c71594c3b2a', '70f74ecc-f202-4567-964d-78b41e303374', 1708044892452, 1708044892900, 1440000000, 3148044892900, '3319904590'),
+	('610b586b-ed18-497f-bd4d-0b37bd49ab3a', '794326b8-eb23-46bf-848d-2985f843ef24', 1708050380638, 1708051728341, 1440000000, 3148051728341, '113556274747998555451'),
+	('63728544-6591-42d8-8509-6fe6d9c0b256', '417efe33-e812-4354-8bf9-875abb0ec2ff', 1708051210071, 1708051210071, 1800, 1708053010071, NULL),
+	('662be689-59b9-445a-9825-0cec184e249a', '9678c5e5-759f-4cc1-b331-6c44c0439b1f', 1708044936554, 1708044937028, 1440000000, 3148044937028, '3319904590'),
+	('67e92907-c5a9-45a5-83f4-61e7f4ad8d49', 'e0134c33-3882-41b0-9091-95ca29e4b956', 1708017488306, 1708022067492, 1440000000, 3148022067492, '3294935336'),
+	('6e90b12f-5154-403c-b71a-5749dcd115f3', 'a559fa3f-0e7c-4112-874d-ef7bacacb4ba', 1708042524428, 1708043267068, 1440000000, 3148043267068, '3294935336'),
+	('70c7bcf3-e0af-480c-a47d-cd21ca76bce9', 'acb81cd3-2693-415f-9d6a-ba27f44bdf6c', 1708050697436, 1708050942144, 1800, 1708052742144, NULL),
+	('741a004a-7d5a-4c5b-b039-561466abc5b3', 'd7a87876-904e-4594-8bde-b78464e9590b', 1708041729730, 1708044307962, 1440000000, 3148044307962, '103885725439845393403'),
+	('77055acf-0a5b-4e39-96dd-93fad6a78d49', 'b063ce8c-332c-42ac-8fa9-20ad305eb7d5', 1708032464025, 1708043553720, 1440000000, 3148043553720, '117852315509326523761'),
+	('78b89771-a54e-403d-87d3-2a0ce12613f8', '72298d3b-12e5-4ebc-9abe-5582b9da1ad6', 1708017466469, 1708022032176, 1440000000, 3148022032176, '106486212139354441133'),
+	('7d43952f-ed6b-4388-b8a1-227b13803951', '31f74016-376a-4b98-ba08-0ac960758eae', 1708044608630, 1708044609004, 1440000000, 3148044609004, '3319904590'),
+	('7fcd2647-e8e3-4e8b-a5c2-cdeb4a6b6b43', '760cc0ea-b246-4b51-a75d-80789682964b', 1708016126209, 1708033860476, 1440000000, 3148033860476, '3319904590'),
+	('817da3d4-c4c9-4393-a598-b36d6e1b7bfd', 'b8e236e0-7d38-49a6-9694-20516f1a2e97', 1708031344848, 1708036633155, 1440000000, 3148036633155, '117657430703576338173'),
+	('88ba1983-86ea-4b92-8d56-460250baec5a', '9326ce4f-ff67-4169-88fc-4ee226617a4e', 1708046903442, 1708048019091, 1440000000, 3148048019091, '3319904590'),
+	('937fcb69-fa73-47d7-aec8-6fb7abac4f35', 'c340706f-1438-4656-9846-9cca04cdf388', 1708044565392, 1708044589576, 1440000000, 3148044589576, '3319904590'),
+	('97ff3715-3d86-4fec-95fb-a56ba7a51982', '7d48c8de-26f2-4dfe-9588-5da2d5ae0c6d', 1708017354340, 1708017396427, 1440000000, 3148017396427, '113556274747998555451'),
+	('9ea6f18a-94f3-4e43-adb4-daf09bed8cbb', '247edba5-708e-4429-a720-82e73c79df4b', 1708046600861, 1708046654449, 1440000000, 3148046654449, '116921118279063541992'),
+	('b0d50f46-8907-4bb4-bf7b-de8a9f4496e0', '81552906-c2ec-4b12-a255-da9615d8d842', 1708016027504, 1708017313181, 1440000000, 3148017313181, '113556274747998555451'),
+	('b2f64e54-328d-4aa5-a858-8f918674cb9f', '5a5de370-d22d-49e5-9d7d-ff365b227760', 1708042715082, 1708042819208, 1440000000, 3148042819208, '3319904590'),
+	('bb60db84-19b4-45ea-8820-20607b3f3818', 'c3e000f6-1aa9-4cac-854e-7d5f019c2f17', 1708045514347, 1708045516200, 1440000000, 3148045516200, '3319904590'),
+	('c022cdbb-e014-47e7-8c23-8a753a1a5233', '78359883-acb6-4181-b1de-db69eb051e6c', 1708051210180, 1708051211805, 1800, 1708053011805, NULL),
+	('c22c8101-3b34-4063-9e98-9bc1e6f93e9c', 'fe3039c2-010d-4907-8be4-eef1a59484db', 1708043033637, 1708043538434, 1440000000, 3148043538434, '3319904590'),
+	('c6d2fa36-a717-4d18-a69e-0e9234880632', '8bda5127-633b-46bd-a967-18541405b422', 1708045815858, 1708049886773, 1440000000, 3148049886773, '109859193618162285759'),
+	('c8820807-7c1b-4abf-a597-b93fa631b172', '1dbb4138-2f21-4e55-90ce-bcd0e981cf30', 1708044509249, 1708044515805, 1440000000, 3148044515805, '3319904590'),
+	('cfc2ecec-1360-414d-9ceb-064db75f4631', 'd83e2d85-5d2a-4559-b992-327392b3f42a', 1708041506198, 1708041642370, 1440000000, 3148041642370, '113447477662620971346'),
+	('defae1ec-6952-4ce3-9022-0a9b17aa7aa9', '5a0cc248-7d42-4abf-bd66-2ab7711b3f79', 1708029192994, 1708033590575, 1440000000, 3148033590575, '106486212139354441133'),
+	('ff9eac25-12c3-41f1-bd27-82ebd1b94cc2', '44dfaffb-b8d9-401c-ba30-02ea0dd9181a', 1708043910757, 1708044433127, 1440000000, 3148044433127, '3319904590'),
+	('ffb98d32-b92e-4379-bd87-9bd9b971e1f2', '9cd39fcc-3305-4caa-b03d-0a64e156b9eb', 1708031182822, 1708041362971, 1440000000, 3148041362971, '107404057349422844203');
 
---
--- Table structure for table `workbooks`
---
+-- 테이블 s10p12e203.spring_session_attributes 구조 내보내기
+CREATE TABLE IF NOT EXISTS `spring_session_attributes` (
+  `SESSION_PRIMARY_ID` char(36) COLLATE utf8mb4_bin NOT NULL,
+  `ATTRIBUTE_NAME` varchar(200) COLLATE utf8mb4_bin NOT NULL,
+  `ATTRIBUTE_BYTES` blob NOT NULL,
+  PRIMARY KEY (`SESSION_PRIMARY_ID`,`ATTRIBUTE_NAME`),
+  CONSTRAINT `SPRING_SESSION_ATTRIBUTES_FK` FOREIGN KEY (`SESSION_PRIMARY_ID`) REFERENCES `spring_session` (`PRIMARY_ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
-DROP TABLE IF EXISTS `workbooks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `workbooks` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `workbook_imgs_id` bigint NOT NULL,
-  `creator_id` bigint NOT NULL,
-  `title` varchar(30) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `volume` int NOT NULL DEFAULT '0',
-  `is_executed` tinyint(1) NOT NULL DEFAULT '0',
-  `is_deploy` tinyint(1) DEFAULT '0',
-  `is_public` tinyint(1) NOT NULL DEFAULT '0',
-  `created_date` datetime(6) NOT NULL,
-  `updated_date` datetime(6) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FKj3in8gtikaa25funjf2e5oh9c` (`creator_id`),
-  KEY `FKaojqprjnie4l3rq5619bg1c79` (`workbook_imgs_id`),
-  CONSTRAINT `FKaojqprjnie4l3rq5619bg1c79` FOREIGN KEY (`workbook_imgs_id`) REFERENCES `workbook_imgs` (`id`),
-  CONSTRAINT `FKj3in8gtikaa25funjf2e5oh9c` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+-- 테이블 데이터 s10p12e203.spring_session_attributes:~64 rows (대략적) 내보내기
+INSERT INTO `spring_session_attributes` (`SESSION_PRIMARY_ID`, `ATTRIBUTE_NAME`, `ATTRIBUTE_BYTES`) VALUES
+	('0837f7ae-0ff9-4f51-85ea-a7686cbbede5', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002437626433323439342d366532642d343633312d393762322d3236396662633630643961647400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('0837f7ae-0ff9-4f51-85ea-a7686cbbede5', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('19ae87b6-7be3-4283-a41b-cb668ae3567e', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002465613165366431332d643966392d346535352d383363642d313532363063646537393931740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000097400037375627400153130363438363231323133393335343434313133337400046e616d6574001e3130eab8b05febb680ec9ab8eab2bd5f32ebb0985feca3bced989ceba0a874000a676976656e5f6e616d65740009eca3bced989ceba0a874000b66616d696c795f6e616d657400153130eab8b05febb680ec9ab8eab2bd5f32ebb0985f7400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b66474a723361696b547765544938627659755847503263414e446444674c4d5a475572664f77526b673d7339362d63740005656d61696c7400133138323433393240646f6e67612e61632e6b7274000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f740002686474000b646f6e67612e61632e6b727800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('19ae87b6-7be3-4283-a41b-cb668ae3567e', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000047400133138323433393240646f6e67612e61632e6b72740013eba7a4eb8184eb9facec9ab420ec8389ecb184),
+	('1c19dad8-218b-4aa2-b27b-94e359279dcb', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002439623061613630342d383466322d346338652d626635362d3766663230666136326535657400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('1c19dad8-218b-4aa2-b27b-94e359279dcb', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('2c6d2b55-7cb4-4d99-a275-000ebad14f59', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002437323039386230322d353063612d343938322d386636622d6436646134663465383365657400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c464b92874000c636f6e6e65637465645f6174740014323032342d30322d31305430383a32363a35325a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c7400146f626a65637431393937406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e64657274000666656d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('2c6d2b55-7cb4-4d99-a275-000ebad14f59', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000037400146f626a65637431393937406e617665722e636f6d740010eab095ed959c20eab8b8ec9ea1ec9db4),
+	('2d366475-5f0f-4e8a-bfab-ed06b529f2bd', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002434326537653036382d656332622d343230352d393432392d306136393861306430326531740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000077400037375627400153131363932313131383237393036333534313939327400046e616d65740006ec9b90eca28574000a676976656e5f6e616d65740006ec9b90eca2857400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b4e42477673575a57766f72774a374a5277496a64494a70444c6437303837687a6d356d6d6631636b353d7339362d63740005656d61696c74001277656f6e3130303940676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('2d366475-5f0f-4e8a-bfab-ed06b529f2bd', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000a74001277656f6e3130303940676d61696c2e636f6d740016ec9e90ec8ba0eba78ceba78ced959c20ed9980eba6ad),
+	('3fdd0e68-cd96-4bba-9328-8bf799523a1a', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002465383630386236382d656633622d346330622d383633312d643533386338326333366337740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000097400037375627400153130363438363231323133393335343434313133337400046e616d6574001e3130eab8b05febb680ec9ab8eab2bd5f32ebb0985feca3bced989ceba0a874000a676976656e5f6e616d65740009eca3bced989ceba0a874000b66616d696c795f6e616d657400153130eab8b05febb680ec9ab8eab2bd5f32ebb0985f7400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b66474a723361696b547765544938627659755847503263414e446444674c4d5a475572664f77526b673d7339362d63740005656d61696c7400133138323433393240646f6e67612e61632e6b7274000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f740002686474000b646f6e67612e61632e6b727800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('3fdd0e68-cd96-4bba-9328-8bf799523a1a', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000047400133138323433393240646f6e67612e61632e6b72740013eba7a4eb8184eb9facec9ab420ec8389ecb184),
+	('559b7b39-47d8-4644-98c7-cb1c09837fe7', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002439333839316562662d336538612d346334392d623537362d3834306263306632313065347400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('559b7b39-47d8-4644-98c7-cb1c09837fe7', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740016ec9e90ec97b0ec8aa4eb9facec9ab420eabf88ed8b80),
+	('57fa7348-8b8f-4438-b12b-4c71594c3b2a', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002437653137616132392d396335382d343139312d396261332d3963386564643832336130357400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('57fa7348-8b8f-4438-b12b-4c71594c3b2a', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('610b586b-ed18-497f-bd4d-0b37bd49ab3a', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002436613863313063612d616465332d343930342d393139372d353263663764626263343864740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153131333535363237343734373939383535353435317400046e616d65740009eca3bced989ceba0a874000a676976656e5f6e616d65740006ed989ceba0a874000b66616d696c795f6e616d65740003eca3bc7400077069637475726574005d68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634975735833797458454353594b4878504736665443777a70324d46495243634c51386c7675726f513544716c453d7339362d63740005656d61696c7400127361666531393937406e617665722e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('610b586b-ed18-497f-bd4d-0b37bd49ab3a', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000017400127361666531393937406e617665722e636f6d740016eb939ceba088ec8aa4ec9785eb909c20eab5aceba684),
+	('662be689-59b9-445a-9825-0cec184e249a', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002463393738383565392d666437362d346434322d383336622d3237323937656262396263617400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('662be689-59b9-445a-9825-0cec184e249a', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('67e92907-c5a9-45a5-83f4-61e7f4ad8d49', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002438363265346336642d353633622d343030302d386335632d3563636464336162623865327400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c464b92874000c636f6e6e65637465645f6174740014323032342d30322d31305430383a32363a35325a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c7400146f626a65637431393937406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e64657274000666656d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('67e92907-c5a9-45a5-83f4-61e7f4ad8d49', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000037400146f626a65637431393937406e617665722e636f6d740010eab095ed959c20eab8b8ec9ea1ec9db4),
+	('6e90b12f-5154-403c-b71a-5749dcd115f3', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002462353530303638622d396337302d343864612d393935612d3639383436326538383261617400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c464b92874000c636f6e6e65637465645f6174740014323032342d30322d31305430383a32363a35325a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c7400146f626a65637431393937406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e64657274000666656d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('6e90b12f-5154-403c-b71a-5749dcd115f3', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000037400146f626a65637431393937406e617665722e636f6d740010eab095ed959c20eab8b8ec9ea1ec9db4),
+	('741a004a-7d5a-4c5b-b039-561466abc5b3', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002432326432666135632d393532312d343061312d393733632d626230356362393161383339740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153130333838353732353433393834353339333430337400046e616d65740009ec9db4ec9881ec9ab174000a676976656e5f6e616d65740006ec9881ec9ab174000b66616d696c795f6e616d65740003ec9db47400077069637475726574005e68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f63496939523663456d6350544e3132744330327a6a356d4479536f5f2d3568654d495347444d5342373168487531643d7339362d63740005656d61696c7400126c79756b3139393840676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c65740005656e2d47427800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('741a004a-7d5a-4c5b-b039-561466abc5b3', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000097400126c79756b3139393840676d61696c2e636f6d74000dec9888ec819c20eb8f84eca084),
+	('77055acf-0a5b-4e39-96dd-93fad6a78d49', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002462376238313365392d303036312d343432392d613538312d376362623234623539346230740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000077400037375627400153131373835323331353530393332363532333736317400046e616d65740024ec849ceca780ec88985bebb680ec9ab8eab2bd5f32ebb0985f453230335ded8c80ec9b9074000a676976656e5f6e616d65740024ec849ceca780ec88985bebb680ec9ab8eab2bd5f32ebb0985f453230335ded8c80ec9b907400077069637475726574005c68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b5349644d5537383363516d68334459614c334d3576436d584c4f312d513463742d497933754e66737a70673d7339362d63740005656d61696c74001373736166796261646140676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('77055acf-0a5b-4e39-96dd-93fad6a78d49', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000574001373736166796261646140676d61696c2e636f6d740010ecb0aceb9e80ed959c20ec8ba0eb8590),
+	('78b89771-a54e-403d-87d3-2a0ce12613f8', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002432626564313163332d313964352d346331612d396565392d623934663633646363383131740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000097400037375627400153130363438363231323133393335343434313133337400046e616d6574001e3130eab8b05febb680ec9ab8eab2bd5f32ebb0985feca3bced989ceba0a874000a676976656e5f6e616d65740009eca3bced989ceba0a874000b66616d696c795f6e616d657400153130eab8b05febb680ec9ab8eab2bd5f32ebb0985f7400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b66474a723361696b547765544938627659755847503263414e446444674c4d5a475572664f77526b673d7339362d63740005656d61696c7400133138323433393240646f6e67612e61632e6b7274000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f740002686474000b646f6e67612e61632e6b727800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('78b89771-a54e-403d-87d3-2a0ce12613f8', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000047400133138323433393240646f6e67612e61632e6b72740013eba7a4eb8184eb9facec9ab420ec8389ecb184),
+	('7d43952f-ed6b-4388-b8a1-227b13803951', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002439636439663134622d386264342d346462322d386462322d3838356130623366646334627400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('7d43952f-ed6b-4388-b8a1-227b13803951', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('7fcd2647-e8e3-4e8b-a5c2-cdeb4a6b6b43', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002432663130643530612d386333382d346163302d396138612d3531383766616634303065317400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('7fcd2647-e8e3-4e8b-a5c2-cdeb4a6b6b43', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740016ec9e90ec97b0ec8aa4eb9facec9ab420eabf88ed8b80),
+	('817da3d4-c4c9-4393-a598-b36d6e1b7bfd', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002432313961363931632d356530352d343165352d396436332d663434386530666565326436740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153131373635373433303730333537363333383137337400046e616d6574000a73656f65756e2062616574000a676976656e5f6e616d6574000673656f65756e74000b66616d696c795f6e616d657400036261657400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634c71396a346c696c71494949556a533047787a74612d32536b614b334a5a3864755676423245613633633d7339362d63740005656d61696c74001762616573656f65756e3132323140676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c65740002656e7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('817da3d4-c4c9-4393-a598-b36d6e1b7bfd', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000774001762616573656f65756e3132323140676d61696c2e636f6d740016ec82aceb9e91ec8aa4eb9facec9ab420eb85b8ec9d84),
+	('88ba1983-86ea-4b92-8d56-460250baec5a', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002436636531616466622d653235382d343531392d383735632d3439333735376639663863647400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('88ba1983-86ea-4b92-8d56-460250baec5a', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('937fcb69-fa73-47d7-aec8-6fb7abac4f35', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002434656663646634632d386135332d346635392d396164622d3335333334663730363236617400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('937fcb69-fa73-47d7-aec8-6fb7abac4f35', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('97ff3715-3d86-4fec-95fb-a56ba7a51982', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002430653835643937612d343866352d343636382d393461322d613935313231376664643834740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153131333535363237343734373939383535353435317400046e616d65740009eca3bced989ceba0a874000a676976656e5f6e616d65740006ed989ceba0a874000b66616d696c795f6e616d65740003eca3bc7400077069637475726574005d68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634975735833797458454353594b4878504736665443777a70324d46495243634c51386c7675726f513544716c453d7339362d63740005656d61696c7400127361666531393937406e617665722e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('97ff3715-3d86-4fec-95fb-a56ba7a51982', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000017400127361666531393937406e617665722e636f6d740016eb939ceba088ec8aa4ec9785eb909c20eab5aceba684),
+	('9ea6f18a-94f3-4e43-adb4-daf09bed8cbb', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002439396466636538642d363665662d346534642d396463622d326630353265666261396161740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000077400037375627400153131363932313131383237393036333534313939327400046e616d65740006ec9b90eca28574000a676976656e5f6e616d65740006ec9b90eca2857400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b4e42477673575a57766f72774a374a5277496a64494a70444c6437303837687a6d356d6d6631636b353d7339362d63740005656d61696c74001277656f6e3130303940676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('9ea6f18a-94f3-4e43-adb4-daf09bed8cbb', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000a74001277656f6e3130303940676d61696c2e636f6d740016ec9e90ec8ba0eba78ceba78ced959c20ed9980eba6ad),
+	('b0d50f46-8907-4bb4-bf7b-de8a9f4496e0', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002463303437343263352d373839312d343438652d396532612d643333326465626364326561740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153131333535363237343734373939383535353435317400046e616d65740009eca3bced989ceba0a874000a676976656e5f6e616d65740006ed989ceba0a874000b66616d696c795f6e616d65740003eca3bc7400077069637475726574005d68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634975735833797458454353594b4878504736665443777a70324d46495243634c51386c7675726f513544716c453d7339362d63740005656d61696c7400127361666531393937406e617665722e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('b0d50f46-8907-4bb4-bf7b-de8a9f4496e0', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000017400127361666531393937406e617665722e636f6d740016eb939ceba088ec8aa4ec9785eb909c20eab5aceba684),
+	('b2f64e54-328d-4aa5-a858-8f918674cb9f', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002461616530376330302d323836342d343330642d393738632d3333396337663335633831357400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('b2f64e54-328d-4aa5-a858-8f918674cb9f', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('bb60db84-19b4-45ea-8820-20607b3f3818', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002430646663363766612d303331362d343738612d393761372d3263356564313032366531637400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('bb60db84-19b4-45ea-8820-20607b3f3818', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('c22c8101-3b34-4063-9e98-9bc1e6f93e9c', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002439313034343033652d643236302d346464362d383435342d6464343366346230393932667400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('c22c8101-3b34-4063-9e98-9bc1e6f93e9c', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('c6d2fa36-a717-4d18-a69e-0e9234880632', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002464633035393864312d636664612d343232632d383238392d336135643665313362396262740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153130393835393139333631383136323238353735397400046e616d65740009ebb0b0ec849cec9d8074000a676976656e5f6e616d65740006ec849cec9d8074000b66616d696c795f6e616d65740003ebb0b07400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634c5462796c7550736c486f706d457a567747353276507643564b4d39544e7871536d41556257376861323d7339362d63740005656d61696c740013656e796f757061726b40676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('c6d2fa36-a717-4d18-a69e-0e9234880632', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000b740013656e796f757061726b40676d61696c2e636f6d740016ed9d90eba5b4eb8a9420eab088eba7a4eab8b0eb96bc),
+	('c8820807-7c1b-4abf-a597-b93fa631b172', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002461663961386338352d313530352d343062382d396166652d3535663661656339343135357400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('c8820807-7c1b-4abf-a597-b93fa631b172', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('cfc2ecec-1360-414d-9ceb-064db75f4631', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002430643364613130332d626661652d346239332d383962312d656664616638386636363163740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153131333434373437373636323632303937313334367400046e616d65740009eca095ec868ceca09574000a676976656e5f6e616d65740006ec868ceca09574000b66616d696c795f6e616d65740003eca0957400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634a426279773372362d4f3535454e4d5a336f58464f674d676d52645962335967534756714359325647613d7339362d63740005656d61696c7400127468776a6430323540676d61696c2e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('cfc2ecec-1360-414d-9ceb-064db75f4631', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000087400127468776a6430323540676d61696c2e636f6d740010eb8ba8ec9584ed959c20ebacbceab2b0),
+	('defae1ec-6952-4ce3-9022-0a9b17aa7aa9', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002436663261343130382d336532382d343337662d623164612d643632326130613932303765740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000097400037375627400153130363438363231323133393335343434313133337400046e616d6574001e3130eab8b05febb680ec9ab8eab2bd5f32ebb0985feca3bced989ceba0a874000a676976656e5f6e616d65740009eca3bced989ceba0a874000b66616d696c795f6e616d657400153130eab8b05febb680ec9ab8eab2bd5f32ebb0985f7400077069637475726574005a68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634b66474a723361696b547765544938627659755847503263414e446444674c4d5a475572664f77526b673d7339362d63740005656d61696c7400133138323433393240646f6e67612e61632e6b7274000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f740002686474000b646f6e67612e61632e6b727800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('defae1ec-6952-4ce3-9022-0a9b17aa7aa9', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e00017870000000047400133138323433393240646f6e67612e61632e6b72740013eba7a4eb8184eb9facec9ab420ec8389ecb184),
+	('ff9eac25-12c3-41f1-bd27-82ebd1b94cc2', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e000478707400093132372e302e302e3174002462623635356662342d613236352d346133342d383636322d3830323735386562333962647400056b616b616f7372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f400000000000067708000000080000000374000269647372000e6a6176612e6c616e672e4c6f6e673b8be490cc8f23df0200014a000576616c7565787200106a6176612e6c616e672e4e756d62657286ac951d0b94e08b020000787000000000c5e1b94e74000c636f6e6e65637465645f6174740014323032342d30312d32395430373a35343a31315a74000d6b616b616f5f6163636f756e747371007e001e3f4000000000000c7708000000100000000b7400096861735f656d61696c737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c7565787001740015656d61696c5f6e656564735f61677265656d656e747371007e002a0074000e69735f656d61696c5f76616c696471007e002b74001169735f656d61696c5f766572696669656471007e002b740005656d61696c740012776f656e36393630406e617665722e636f6d74000d6861735f62697274687965617271007e002b7400196269727468796561725f6e656564735f61677265656d656e7471007e002d7400096269727468796561727400043139393774000a6861735f67656e64657271007e002b74001667656e6465725f6e656564735f61677265656d656e7471007e002d74000667656e6465727400046d616c6578007800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('ff9eac25-12c3-41f1-bd27-82ebd1b94cc2', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e0001787000000002740012776f656e36393630406e617665722e636f6d740013ec9ea5eca084eb8f9920ec9ab0eb9494eba5b4),
+	('ffb98d32-b92e-4379-bd87-9bd9b971e1f2', 'SPRING_SECURITY_CONTEXT', _binary 0xaced00057372003d6f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e636f6e746578742e5365637572697479436f6e74657874496d706c000000000000023a0200014c000e61757468656e7469636174696f6e7400324c6f72672f737072696e676672616d65776f726b2f73656375726974792f636f72652f41757468656e7469636174696f6e3b7870737200536f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636c69656e742e61757468656e7469636174696f6e2e4f417574683241757468656e7469636174696f6e546f6b656e000000000000023a0200024c001e617574686f72697a6564436c69656e74526567697374726174696f6e49647400124c6a6176612f6c616e672f537472696e673b4c00097072696e636970616c74003a4c6f72672f737072696e676672616d65776f726b2f73656375726974792f6f61757468322f636f72652f757365722f4f4175746832557365723b787200476f72672e737072696e676672616d65776f726b2e73656375726974792e61757468656e7469636174696f6e2e416273747261637441757468656e7469636174696f6e546f6b656ed3aa287e6e47640e0200035a000d61757468656e746963617465644c000b617574686f7269746965737400164c6a6176612f7574696c2f436f6c6c656374696f6e3b4c000764657461696c737400124c6a6176612f6c616e672f4f626a6563743b787001737200266a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654c697374fc0f2531b5ec8e100200014c00046c6973747400104c6a6176612f7574696c2f4c6973743b7872002c6a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65436f6c6c656374696f6e19420080cb5ef71e0200014c00016371007e00077870737200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a65787000000001770400000001737200426f72672e737072696e676672616d65776f726b2e73656375726974792e636f72652e617574686f726974792e53696d706c654772616e746564417574686f72697479000000000000023a0200014c0004726f6c6571007e0004787074000a524f4c455f47554553547871007e000f737200486f72672e737072696e676672616d65776f726b2e73656375726974792e7765622e61757468656e7469636174696f6e2e57656241757468656e7469636174696f6e44657461696c73000000000000023a0200024c000d72656d6f74654164647265737371007e00044c000973657373696f6e496471007e0004787074000f303a303a303a303a303a303a303a3174002463373465656638632d656331622d343131372d383263352d623434653534363330656638740006676f6f676c657372003f6f72672e737072696e676672616d65776f726b2e73656375726974792e6f61757468322e636f72652e757365722e44656661756c744f417574683255736572000000000000023a0200034c000a6174747269627574657374000f4c6a6176612f7574696c2f4d61703b4c000b617574686f72697469657374000f4c6a6176612f7574696c2f5365743b4c00106e616d654174747269627574654b657971007e00047870737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c654d6170f1a5a8fe74f507420200014c00016d71007e00197870737200176a6176612e7574696c2e4c696e6b6564486173684d617034c04e5c106cc0fb0200015a000b6163636573734f72646572787200116a6176612e7574696c2e486173684d61700507dac1c31660d103000246000a6c6f6164466163746f724900097468726573686f6c6478703f4000000000000c770800000010000000087400037375627400153130373430343035373334393432323834343230337400046e616d65740006eb829ceb829874000a676976656e5f6e616d65740003eb829874000b66616d696c795f6e616d65740003eb829c7400077069637475726574005c68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f612f414367386f634a61574d716639536b546a68345a6f2d79385a464248584e506b55584245686b6c724e416f345968754d62413d7339362d63740005656d61696c74001173746832323131406e617665722e636f6d74000e656d61696c5f7665726966696564737200116a6176612e6c616e672e426f6f6c65616ecd207280d59cfaee0200015a000576616c75657870017400066c6f63616c657400026b6f7800737200256a6176612e7574696c2e436f6c6c656374696f6e7324556e6d6f6469666961626c65536574801d92d18f9b80550200007871007e000c737200176a6176612e7574696c2e4c696e6b656448617368536574d86cd75a95dd2a1e020000787200116a6176612e7574696c2e48617368536574ba44859596b8b7340300007870770c000000103f4000000000000171007e00117871007e0021),
+	('ffb98d32-b92e-4379-bd87-9bd9b971e1f2', 'user', _binary 0xaced000573720029636f6d2e637574652e6761776d2e646f6d61696e2e757365722e64746f2e53657373696f6e55736572b62c9e13a7c8a69602000349000269644c0005656d61696c7400124c6a6176612f6c616e672f537472696e673b4c00086e69636b6e616d6571007e000178700000000674001173746832323131406e617665722e636f6d740013ebaa85ecbe8ced959c20eab088eba7a4eab8b0);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+-- 테이블 s10p12e203.stylelog 구조 내보내기
+CREATE TABLE IF NOT EXISTS `stylelog` (
+  `stylelog_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `date` datetime(6) NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `stylelog_img` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `temperature` int(11) NOT NULL,
+  `weather` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`stylelog_id`),
+  KEY `FK1pxf3cqdl9g76umneipmcev4k` (`user_id`),
+  CONSTRAINT `FK1pxf3cqdl9g76umneipmcev4k` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- 테이블 데이터 s10p12e203.stylelog:~4 rows (대략적) 내보내기
+INSERT INTO `stylelog` (`stylelog_id`, `created_at`, `is_deleted`, `updated_at`, `date`, `location`, `stylelog_img`, `temperature`, `weather`, `user_id`) VALUES
+	(1, '2024-02-16 04:14:04.410000', b'0', '2024-02-16 04:14:04.410000', '2024-02-15 00:00:00.000000', '명지', '60cc5e8f-c692-4b55-abd7-5b85a0fc663c.png', 23, '맑음', 2),
+	(2, '2024-02-16 04:14:26.494000', b'0', '2024-02-16 04:14:26.494000', '2024-02-15 00:00:00.000000', '녹산', '0f97c18f-6d0a-4ed6-bc68-da13b6f60a10.png', 22, '맑음', 2),
+	(3, '2024-02-16 02:00:49.196000', b'0', '2024-02-16 02:00:49.196000', '2024-02-07 15:00:00.000000', '싸피', '9c2cbfe3-f648-49a7-87c7-2c3bdf0ac03a.png', 11, '맑음', 2),
+	(4, '2024-02-16 02:29:27.163000', b'0', '2024-02-16 02:29:27.163000', '2024-02-15 15:00:00.000000', '녹산', 'dc836667-5e5b-459e-9bf3-ab6d4ef9309d.png', 3, '맑음', 2);
+
+-- 테이블 s10p12e203.tag 구조 내보내기
+CREATE TABLE IF NOT EXISTS `tag` (
+  `tag_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`tag_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- 테이블 데이터 s10p12e203.tag:~60 rows (대략적) 내보내기
+INSERT INTO `tag` (`tag_id`, `created_at`, `is_deleted`, `updated_at`, `name`) VALUES
+	(1, '2024-02-16 03:57:07.695000', b'0', '2024-02-16 03:57:07.695000', '무드'),
+	(2, '2024-02-16 03:57:07.771000', b'0', '2024-02-16 03:57:07.771000', '언제잘수있을까'),
+	(3, '2024-02-16 05:01:18.728000', b'0', '2024-02-16 05:01:18.728000', '힘들다'),
+	(4, '2024-02-16 05:01:18.814000', b'0', '2024-02-16 05:01:18.814000', '인생'),
+	(5, '2024-02-16 05:01:29.778000', b'0', '2024-02-16 05:01:29.778000', 'ㅁㄴㅇ'),
+	(6, '2024-02-16 05:01:42.203000', b'0', '2024-02-16 05:01:42.203000', '비밀'),
+	(7, '2024-02-16 05:02:14.757000', b'0', '2024-02-16 05:02:14.757000', 'ㅎㄹㅀ'),
+	(8, '2024-02-16 05:02:57.093000', b'0', '2024-02-16 05:02:57.093000', 'ㅎㅎ'),
+	(9, '2024-02-16 05:03:16.996000', b'0', '2024-02-16 05:03:16.996000', 'ㅁㅁㅁㅁ'),
+	(10, '2024-02-16 05:03:46.832000', b'0', '2024-02-16 05:03:46.832000', 'ㅎㅁㄴㅇㄹ'),
+	(11, '2024-02-16 05:07:46.788000', b'0', '2024-02-16 05:07:46.788000', 'ㅎㅇㅎㅇ'),
+	(12, '2024-02-16 05:39:54.156000', b'0', '2024-02-16 05:39:54.156000', '잠와'),
+	(13, '2024-02-16 06:07:07.911000', b'0', '2024-02-16 06:07:07.911000', '간지'),
+	(14, '2024-02-16 06:07:07.972000', b'0', '2024-02-16 06:07:07.972000', '불금'),
+	(15, '2024-02-16 06:07:25.451000', b'0', '2024-02-16 06:07:25.451000', '데일리룩'),
+	(16, '2024-02-16 06:07:37.192000', b'0', '2024-02-16 06:07:37.192000', '여긴어디'),
+	(17, '2024-02-16 06:07:37.251000', b'0', '2024-02-16 06:07:37.251000', '난누구'),
+	(18, '2024-02-16 06:07:59.210000', b'0', '2024-02-16 06:07:59.210000', '블랙'),
+	(19, '2024-02-16 06:08:41.463000', b'0', '2024-02-16 06:08:41.463000', '화이트'),
+	(20, '2024-02-16 06:08:41.478000', b'0', '2024-02-16 06:08:41.478000', '엘레강스'),
+	(21, '2024-02-16 06:08:41.492000', b'0', '2024-02-16 06:08:41.492000', 'ootd'),
+	(22, '2024-02-16 06:08:41.507000', b'0', '2024-02-16 06:08:41.507000', '맞팔'),
+	(23, '2024-02-16 06:08:41.522000', b'0', '2024-02-16 06:08:41.523000', '그레이'),
+	(24, '2024-02-16 06:08:41.537000', b'0', '2024-02-16 06:08:41.537000', '전시회'),
+	(25, '2024-02-16 06:08:41.553000', b'0', '2024-02-16 06:08:41.553000', '좋아요'),
+	(26, '2024-02-16 06:09:48.362000', b'0', '2024-02-16 06:09:48.362000', '심플'),
+	(27, '2024-02-16 06:09:48.376000', b'0', '2024-02-16 06:09:48.376000', '꾸안꾸'),
+	(28, '2024-02-16 06:09:48.402000', b'0', '2024-02-16 06:09:48.402000', '티셔츠'),
+	(29, '2024-02-16 06:09:48.432000', b'0', '2024-02-16 06:09:48.432000', '샤넬'),
+	(30, '2024-02-16 06:09:48.447000', b'0', '2024-02-16 06:09:48.447000', 'chanel'),
+	(31, '2024-02-16 06:10:16.790000', b'0', '2024-02-16 06:10:16.790000', '원피스'),
+	(32, '2024-02-16 06:10:16.805000', b'0', '2024-02-16 06:10:16.805000', '뷔스티에'),
+	(33, '2024-02-16 06:10:16.819000', b'0', '2024-02-16 06:10:16.819000', '까르띠에'),
+	(34, '2024-02-16 06:10:16.833000', b'0', '2024-02-16 06:10:16.833000', '셔츠'),
+	(35, '2024-02-16 06:10:16.852000', b'0', '2024-02-16 06:10:16.852000', '마이'),
+	(36, '2024-02-16 06:10:16.869000', b'0', '2024-02-16 06:10:16.869000', '결혼식'),
+	(37, '2024-02-16 06:10:16.883000', b'0', '2024-02-16 06:10:16.883000', '하객룩'),
+	(38, '2024-02-16 06:10:51.475000', b'0', '2024-02-16 06:10:51.475000', '데이트'),
+	(39, '2024-02-16 06:10:51.498000', b'0', '2024-02-16 06:10:51.498000', '큐티'),
+	(40, '2024-02-16 06:10:51.511000', b'0', '2024-02-16 06:10:51.511000', '묶은머리'),
+	(41, '2024-02-16 06:10:51.533000', b'0', '2024-02-16 06:10:51.533000', 'mood'),
+	(42, '2024-02-16 06:10:51.554000', b'0', '2024-02-16 06:10:51.554000', '나시'),
+	(43, '2024-02-16 06:10:51.570000', b'0', '2024-02-16 06:10:51.570000', '핸드백'),
+	(44, '2024-02-16 06:10:51.584000', b'0', '2024-02-16 06:10:51.584000', '좋반'),
+	(45, '2024-02-16 06:12:03.164000', b'0', '2024-02-16 06:12:03.164000', '비니'),
+	(46, '2024-02-16 06:12:03.177000', b'0', '2024-02-16 06:12:03.177000', '트위드'),
+	(47, '2024-02-16 06:12:03.191000', b'0', '2024-02-16 06:12:03.191000', '갤러웨이'),
+	(48, '2024-02-16 06:12:03.206000', b'0', '2024-02-16 06:12:03.206000', '네이비'),
+	(49, '2024-02-16 06:12:03.222000', b'0', '2024-02-16 06:12:03.222000', '여자겨울룩'),
+	(50, '2024-02-16 06:12:03.236000', b'0', '2024-02-16 06:12:03.236000', '여자겨울데일리룩'),
+	(51, '2024-02-16 06:12:03.268000', b'0', '2024-02-16 06:12:03.268000', '코랄'),
+	(52, '2024-02-16 06:12:23.996000', b'0', '2024-02-16 06:12:23.996000', '나들이'),
+	(53, '2024-02-16 06:12:24.009000', b'0', '2024-02-16 06:12:24.009000', '선글라스'),
+	(54, '2024-02-16 06:12:24.023000', b'0', '2024-02-16 06:12:24.023000', '젠들몬스터'),
+	(55, '2024-02-16 06:12:54.109000', b'0', '2024-02-16 06:12:54.109000', '벚꽃'),
+	(56, '2024-02-16 06:12:54.124000', b'0', '2024-02-16 06:12:54.124000', '예브당'),
+	(57, '2024-02-16 06:12:54.139000', b'0', '2024-02-16 06:12:54.139000', '봄'),
+	(58, '2024-02-16 06:12:54.153000', b'0', '2024-02-16 06:12:54.153000', '봄데일리'),
+	(59, '2024-02-16 06:12:54.169000', b'0', '2024-02-16 06:12:54.169000', '봄데일리룩'),
+	(60, '2024-02-16 06:14:14.797000', b'0', '2024-02-16 06:14:14.797000', '잠와요');
+
+-- 테이블 s10p12e203.tag_lookbook 구조 내보내기
+CREATE TABLE IF NOT EXISTS `tag_lookbook` (
+  `tag_lookbook_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `lookbook_id` int(11) DEFAULT NULL,
+  `tag_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tag_lookbook_id`),
+  KEY `FKoyt2g9lpgcjncah6w9phmh0ep` (`lookbook_id`),
+  KEY `FKgsqfxcrcnrereu6lb8tj7463j` (`tag_id`),
+  CONSTRAINT `FKgsqfxcrcnrereu6lb8tj7463j` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`tag_id`),
+  CONSTRAINT `FKoyt2g9lpgcjncah6w9phmh0ep` FOREIGN KEY (`lookbook_id`) REFERENCES `lookbook` (`lookbook_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- 테이블 데이터 s10p12e203.tag_lookbook:~69 rows (대략적) 내보내기
+INSERT INTO `tag_lookbook` (`tag_lookbook_id`, `created_at`, `is_deleted`, `updated_at`, `lookbook_id`, `tag_id`) VALUES
+	(1, '2024-02-16 03:57:07.724000', b'0', '2024-02-16 03:57:07.724000', 1, 1),
+	(2, '2024-02-16 03:57:07.790000', b'0', '2024-02-16 03:57:07.790000', 1, 2),
+	(3, '2024-02-16 05:01:18.757000', b'0', '2024-02-16 05:01:18.757000', 3, 3),
+	(4, '2024-02-16 05:01:18.833000', b'0', '2024-02-16 05:01:18.833000', 3, 4),
+	(5, '2024-02-16 05:01:29.785000', b'0', '2024-02-16 05:01:29.785000', 4, 5),
+	(6, '2024-02-16 05:01:42.223000', b'0', '2024-02-16 05:01:42.223000', 5, 6),
+	(7, '2024-02-16 05:02:14.762000', b'0', '2024-02-16 05:02:14.762000', 6, 7),
+	(8, '2024-02-16 05:02:57.098000', b'0', '2024-02-16 05:02:57.098000', 8, 8),
+	(9, '2024-02-16 05:03:17.000000', b'0', '2024-02-16 05:03:17.000000', 9, 9),
+	(10, '2024-02-16 05:03:46.836000', b'0', '2024-02-16 05:03:46.836000', 10, 10),
+	(11, '2024-02-16 05:07:46.794000', b'0', '2024-02-16 05:07:46.794000', 11, 11),
+	(12, '2024-02-16 05:39:54.175000', b'0', '2024-02-16 05:39:54.175000', 12, 12),
+	(13, '2024-02-16 06:07:07.931000', b'0', '2024-02-16 06:07:07.931000', 13, 13),
+	(14, '2024-02-16 06:07:07.991000', b'0', '2024-02-16 06:07:07.991000', 13, 14),
+	(15, '2024-02-16 06:07:25.456000', b'0', '2024-02-16 06:07:25.456000', 14, 15),
+	(16, '2024-02-16 06:07:37.211000', b'0', '2024-02-16 06:07:37.211000', 15, 16),
+	(17, '2024-02-16 06:07:37.271000', b'0', '2024-02-16 06:07:37.271000', 15, 17),
+	(18, '2024-02-16 06:07:59.215000', b'0', '2024-02-16 06:07:59.215000', 16, 18),
+	(19, '2024-02-16 06:08:41.468000', b'0', '2024-02-16 06:08:41.468000', 17, 19),
+	(20, '2024-02-16 06:08:41.482000', b'0', '2024-02-16 06:08:41.482000', 17, 20),
+	(21, '2024-02-16 06:08:41.497000', b'0', '2024-02-16 06:08:41.497000', 17, 21),
+	(22, '2024-02-16 06:08:41.512000', b'0', '2024-02-16 06:08:41.512000', 17, 22),
+	(23, '2024-02-16 06:08:41.528000', b'0', '2024-02-16 06:08:41.528000', 17, 23),
+	(24, '2024-02-16 06:08:41.543000', b'0', '2024-02-16 06:08:41.543000', 17, 24),
+	(25, '2024-02-16 06:08:41.558000', b'0', '2024-02-16 06:08:41.558000', 17, 25),
+	(26, '2024-02-16 06:09:48.367000', b'0', '2024-02-16 06:09:48.367000', 18, 26),
+	(27, '2024-02-16 06:09:48.381000', b'0', '2024-02-16 06:09:48.381000', 18, 27),
+	(28, '2024-02-16 06:09:48.392000', b'0', '2024-02-16 06:09:48.392000', 18, 19),
+	(29, '2024-02-16 06:09:48.407000', b'0', '2024-02-16 06:09:48.407000', 18, 28),
+	(30, '2024-02-16 06:09:48.421000', b'0', '2024-02-16 06:09:48.421000', 18, 22),
+	(31, '2024-02-16 06:09:48.437000', b'0', '2024-02-16 06:09:48.437000', 18, 29),
+	(32, '2024-02-16 06:09:48.453000', b'0', '2024-02-16 06:09:48.453000', 18, 30),
+	(33, '2024-02-16 06:10:16.795000', b'0', '2024-02-16 06:10:16.795000', 19, 31),
+	(34, '2024-02-16 06:10:16.810000', b'0', '2024-02-16 06:10:16.810000', 19, 32),
+	(35, '2024-02-16 06:10:16.824000', b'0', '2024-02-16 06:10:16.824000', 19, 33),
+	(36, '2024-02-16 06:10:16.842000', b'0', '2024-02-16 06:10:16.842000', 19, 34),
+	(37, '2024-02-16 06:10:16.856000', b'0', '2024-02-16 06:10:16.856000', 19, 35),
+	(38, '2024-02-16 06:10:16.874000', b'0', '2024-02-16 06:10:16.874000', 19, 36),
+	(39, '2024-02-16 06:10:16.888000', b'0', '2024-02-16 06:10:16.888000', 19, 37),
+	(40, '2024-02-16 06:10:47.964000', b'0', '2024-02-16 06:10:47.964000', 20, 1),
+	(41, '2024-02-16 06:10:51.479000', b'0', '2024-02-16 06:10:51.479000', 21, 38),
+	(42, '2024-02-16 06:10:51.488000', b'0', '2024-02-16 06:10:51.488000', 21, 19),
+	(43, '2024-02-16 06:10:51.502000', b'0', '2024-02-16 06:10:51.502000', 21, 39),
+	(44, '2024-02-16 06:10:51.515000', b'0', '2024-02-16 06:10:51.515000', 21, 40),
+	(45, '2024-02-16 06:10:51.525000', b'0', '2024-02-16 06:10:51.525000', 21, 21),
+	(46, '2024-02-16 06:10:51.539000', b'0', '2024-02-16 06:10:51.539000', 21, 41),
+	(47, '2024-02-16 06:10:51.559000', b'0', '2024-02-16 06:10:51.559000', 21, 42),
+	(48, '2024-02-16 06:10:51.575000', b'0', '2024-02-16 06:10:51.575000', 21, 43),
+	(49, '2024-02-16 06:10:51.588000', b'0', '2024-02-16 06:10:51.588000', 21, 44),
+	(50, '2024-02-16 06:12:03.168000', b'0', '2024-02-16 06:12:03.168000', 22, 45),
+	(51, '2024-02-16 06:12:03.181000', b'0', '2024-02-16 06:12:03.181000', 22, 46),
+	(52, '2024-02-16 06:12:03.197000', b'0', '2024-02-16 06:12:03.197000', 22, 47),
+	(53, '2024-02-16 06:12:03.211000', b'0', '2024-02-16 06:12:03.211000', 22, 48),
+	(54, '2024-02-16 06:12:03.226000', b'0', '2024-02-16 06:12:03.226000', 22, 49),
+	(55, '2024-02-16 06:12:03.240000', b'0', '2024-02-16 06:12:03.240000', 22, 50),
+	(56, '2024-02-16 06:12:03.250000', b'0', '2024-02-16 06:12:03.250000', 22, 36),
+	(57, '2024-02-16 06:12:03.259000', b'0', '2024-02-16 06:12:03.259000', 22, 37),
+	(58, '2024-02-16 06:12:03.272000', b'0', '2024-02-16 06:12:03.272000', 22, 51),
+	(59, '2024-02-16 06:12:24.001000', b'0', '2024-02-16 06:12:24.001000', 23, 52),
+	(60, '2024-02-16 06:12:24.014000', b'0', '2024-02-16 06:12:24.014000', 23, 53),
+	(61, '2024-02-16 06:12:24.027000', b'0', '2024-02-16 06:12:24.027000', 23, 54),
+	(62, '2024-02-16 06:12:54.100000', b'0', '2024-02-16 06:12:54.100000', 25, 41),
+	(63, '2024-02-16 06:12:54.115000', b'0', '2024-02-16 06:12:54.115000', 25, 55),
+	(64, '2024-02-16 06:12:54.129000', b'0', '2024-02-16 06:12:54.129000', 25, 56),
+	(65, '2024-02-16 06:12:54.143000', b'0', '2024-02-16 06:12:54.143000', 25, 57),
+	(66, '2024-02-16 06:12:54.157000', b'0', '2024-02-16 06:12:54.157000', 25, 58),
+	(67, '2024-02-16 06:12:54.173000', b'0', '2024-02-16 06:12:54.173000', 25, 59),
+	(68, '2024-02-16 06:12:54.182000', b'0', '2024-02-16 06:12:54.182000', 25, 21),
+	(69, '2024-02-16 06:14:14.814000', b'0', '2024-02-16 06:14:14.814000', 26, 60);
+
+-- 테이블 s10p12e203.user 구조 내보내기
+CREATE TABLE IF NOT EXISTS `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `age` int(11) DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `gender` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `nickname` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `point` int(11) DEFAULT NULL,
+  `profile_img` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `provider` int(11) DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `session` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- 테이블 데이터 s10p12e203.user:~11 rows (대략적) 내보내기
+INSERT INTO `user` (`user_id`, `age`, `email`, `gender`, `level`, `nickname`, `point`, `profile_img`, `provider`, `role`, `session`) VALUES
+	(1, 0, 'safe1997@naver.com', 'NONE', 1, '드레스업된 구름', 0, '1b70e21f-215b-4b17-824a-7a3ced744d50.jpg', 0, 'GUEST', NULL),
+	(2, 27, 'woen6960@naver.com', 'MALE', 2, '장전동 우디르', 82, '7d0697ba-6f93-4423-aa29-d205e1788ee6.png', 1, 'GUEST', NULL),
+	(3, 27, 'object1997@naver.com', 'FEMALE', 1, '강한 길잡이', 0, '1b70e21f-215b-4b17-824a-7a3ced744d50.jpg', 1, 'GUEST', NULL),
+	(4, 0, '1824392@donga.ac.kr', 'NONE', 1, '매끄러운 색채', 0, '1b70e21f-215b-4b17-824a-7a3ced744d50.jpg', 0, 'GUEST', NULL),
+	(5, 0, 'ssafybada@gmail.com', 'NONE', 2, '찬란한 신념', 105, '8fd7f423-ac6d-48ce-90f8-379a679a0939.png', 0, 'GUEST', NULL),
+	(6, 0, 'sth2211@naver.com', 'NONE', 1, '명쾌한 바다', 90, 'ca567891-aba1-4208-be28-a671402260cb.jpg', 0, 'GUEST', NULL),
+	(7, 0, 'baeseoeun1221@gmail.com', 'NONE', 1, '사랑스러운 노을', 0, '1b70e21f-215b-4b17-824a-7a3ced744d50.jpg', 0, 'GUEST', NULL),
+	(8, 0, 'thwjd025@gmail.com', 'NONE', 1, '단아한 물결', 0, NULL, 0, 'GUEST', NULL),
+	(9, 0, 'lyuk1998@gmail.com', 'NONE', 1, '예쁜 도전', 20, NULL, 0, 'GUEST', NULL),
+	(10, 0, 'weon1009@gmail.com', 'NONE', 1, '자신만만한 홀릭', 0, NULL, 0, 'GUEST', NULL),
+	(11, 0, 'enyoupark@gmail.com', 'NONE', 1, '흐르는 갈매기떼', 0, NULL, 0, 'GUEST', NULL);
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2023-05-18 23:48:00
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
