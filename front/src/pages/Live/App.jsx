@@ -7,19 +7,29 @@ import UserModel from "./models/user-model.jsx";
 import ChatComponent from "./Chat/ChatComponent.jsx";
 import { userInfo } from "../../apis/user"
 import { fetchUserInfo, useUserStore } from '../../stores/user.js';
+import { useNavigate, Outlet } from "react-router-dom";
 
 var localUser = new UserModel();
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:8080/";
 
+function withUser(Component) {
+  return function WrappedComponent(props) {
+    const user = useUserStore((state) => state.user);
+    return <Component {...props} user={user} />;
+  };
+}
+
 class Live extends Component {
   constructor(props) {
     super(props);
 
+    // console.log("props", this.props.user);
+
     this.state = {
       mySessionId: "SessionA",
-      myUserName: "은은한 달",
+      myUserName: this.props.user ? this.props.user.nickname : "none",
       myPoint: 10,
       session: undefined,
       mainStreamManager: undefined,
@@ -50,6 +60,17 @@ class Live extends Component {
     this.handleRedirect = this.handleRedirect.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    // user props가 변경되었을 때만 업데이트합니다.
+    if (prevProps.user !== this.props.user) {
+      this.setState({
+        myUserName: this.props.user.nickname, // 새로운 user 값으로 상태를 업데이트합니다.
+        // 다른 필요한 업데이트도 수행할 수 있습니다.
+      });
+    }
   }
 
   componentDidMount() {
@@ -349,7 +370,7 @@ class Live extends Component {
               <p>
               <h2 className="text-lg text-gray-800 font-bold mb-2">감 포인트</h2>
                   <input
-                    className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className=""
                     type="number"
                     id="livePoint"
                     value={this.state.myPoint}
@@ -472,5 +493,5 @@ class Live extends Component {
 }
 
 
-export default Live;
 
+export default withUser(Live);

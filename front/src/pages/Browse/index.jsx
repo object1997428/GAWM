@@ -1,3 +1,12 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import logoImage from "../../assets/images/HomeLogo.svg";
+import LiveImg from "./LiveImg.png";
+import TodayLookComponent from "./TodayLookComponent.jsx";
+import LiveComponent from "./LiveComponent.jsx";
+import { get_top_list } from "../../apis/lookbook";
+import { gawmApiAxios } from "../../utilities/http-commons";
+import { fetchUserInfo, useUserStore } from "../../stores/user.js";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import logoImage from '../../assets/images/HomeLogo.svg';
@@ -8,55 +17,49 @@ import LiveComponent from './LiveComponent.jsx';
 import {get_top_list,fetchLookbooks} from '../../apis/lookbook'
 import { gawmApiAxios } from '../../utilities/http-commons';
 import Gawm from "../../assets/Gawm.svg"; 
-const gawmapiAxios = gawmApiAxios()
+
+const gawmapiAxios = gawmApiAxios();
+
 export default function Browse() {
-    const [todayLooks, setTodayLooks] = useState([]);
-    const [allLooks, setAllLooks] = useState([]);
-    
-    const [liveRooms, setLiveRooms] = useState([]);
+  const [todayLooks, setTodayLooks] = useState([]);
+  const [liveRooms, setLiveRooms] = useState([]);
+  const user = useUserStore();
+  const [allLooks, setAllLooks] = useState([]);
 
-    useEffect(() => {
-        const fetchTodayLooks = async () => {
-            try {
-                const response = await get_top_list();
-                setTodayLooks(response.data.content);
-            } catch (error) {
-                console.error('Today Looks 데이터를 불러오는데 실패했습니다.', error);
-            }
-        };
+  useEffect(() => {
+    const fetchTodayLooks = async () => {
+      try {
+        const response = await get_top_list();
+        setTodayLooks(response.data.content);
+      } catch (error) {
+        console.error('Today Looks 데이터를 불러오는데 실패했습니다.', error);
+      }
+    };
 
-        fetchTodayLooks();
-    }, []);
+    const fetchLiveRooms = async () => {
+      try {
+        const response = await gawmapiAxios.get('/live-room/list/');
+        setLiveRooms(response.data.content);
+      } catch (error) {
+        console.error('Live Rooms 데이터를 불러오는데 실패했습니다.', error);
+      }
+    };
 
-    useEffect(() => {
-        const fetchLiveRooms = async () => {
-            try {
-                const response = await gawmapiAxios.get('/live-room/list/');
-                console.log(response)
-                setLiveRooms(response.data.content);
-            } catch (error) {
-                console.error('Live Rooms 데이터를 불러오는데 실패했습니다.', error);
-            }
-        };
-        fetchLiveRooms();
-    }, []);
+    const fetchAllLooks = async () => {
+      try {
+        const response = await fetchLookbooks({ page: 0, size: 10, sort: 'createdAt,desc' });
+        const filteredLooks = response.data.content.filter(look => look.isPublic === true);
+        setAllLooks(filteredLooks);
+      } catch (error) {
+        console.error('All Looks 데이터를 불러오는데 실패했습니다.', error);
+      }
+    };
 
-    //내감어때 모든데이터 
-    useEffect(() => {
-        const fetchAllLooks = async () => {
-            try {
-                const response = await fetchLookbooks({ page: 0, size: 10, sort: 'createdAt,desc' });
-                console.log("모든내감어떄",response)
-                const filteredLooks = response.data.content.filter(look => look.isPublic === true);
-
-                setAllLooks(filteredLooks);
-            } catch (error) {
-                console.error('Today Looks 데이터를 불러오는데 실패했습니다.', error);
-            }
-        };
-
-        fetchAllLooks();
-    }, []);
+    fetchTodayLooks();
+    fetchLiveRooms();
+    fetchAllLooks();
+    fetchUserInfo();
+  }, []);
 
     const Header = () => {
         return (
@@ -103,39 +106,41 @@ export default function Browse() {
         );
     };
 
+  console.log(user.user.nickname);
 
-    const LiveSection = ({ title }) => {
-        return (
-            <div className="live-section mt-4">
-                <div className="flex items-center">
-                    <h2 className="h2-nps">{title}</h2>
-                    <img src={LiveImg} alt="Live" className="ml-2 w-10 h-6" />
-                </div>
 
-                <div className="flex gap-2 mt-1 justify-center">
-                    {liveRooms.map(room => (
-                        <LiveComponent
-                            key={room.liveId}
-                            image={room.profileImg}
-                            title={room.name}
-                            createdDate={new Date(room.createdAt)}
-                            points={room.point}
-                        />
-                    ))}
-                </div>
-            </div>
-        );
-    };
-    
-
+  const LiveSection = ({ title }) => {
     return (
-        <div className="min-h-screen flex flex-col">
-            <Header />
-            <div className="flex-1 mt-9">
-                <TodayLookSection title="오늘의 감각" />
-                <LiveSection title="26˚C 라이브" />
-                <AllLookSection title="내감어때" />
-            </div>
+      <div className="live-section mt-4">
+        <div className="flex items-center">
+          <h2 className="h2-nps">{title}</h2>
+          <img src={LiveImg} alt="Live" className="ml-2 w-10 h-6" />
         </div>
+
+        <div className="flex gap-2 mt-1 justify-center">
+          {liveRooms.map((room) => (
+            <LiveComponent
+              key={room.liveId}
+              sessionId={room.session}
+              image={room.profileImg}
+              title={room.name}
+              createdDate={new Date(room.createdAt)}
+              points={room.point}
+            />
+          ))}
+        </div>
+      </div>
     );
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <div className="flex-1 mt-9">
+        <TodayLookSection title="오늘의 감각" />
+        <LiveSection title="26˚C 라이브" />
+        <TodayLookSection title="내감어때" />
+      </div>
+    </div>
+  );
 }

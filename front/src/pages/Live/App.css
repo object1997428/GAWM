@@ -4,7 +4,9 @@
 }
 
 #join, #session {
-  position: absolute;
+  display: flex;
+  flex-direction: row;
+  margin-top: 100px;
   margin: auto;
   top: 100px;
   bottom: 0;

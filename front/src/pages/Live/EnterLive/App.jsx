@@ -1,27 +1,35 @@
 import axios from "axios";
 import React, { Component } from "react";
-import "./App.css";
+// import "./App.css";
+import "./AppCustom.css";
 import { OpenVidu } from "openvidu-browser";
 import UserVideoComponent from "../UserVideoComponent.jsx";
 import UserModel from "../models/user-model.jsx";
 import ChatComponent from "../Chat/ChatComponent.jsx";
+import { useUserStore, fetchUserInfo } from "@/stores/user.js";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:8080/";
 
+function withUser(Component) {
+  return function WrappedComponent(props) {
+    const user = useUserStore((state) => state.user);
+    return <Component {...props} user={user} />;
+  };
+}
 class EnterLive extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: this.props.sessionId,
+      myUserName: this.props.user ? this.props.user.nickname : "none",
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      liveName: "26C 라이브 이름",
+      liveName: this.props.title,
       isPublic: true,
       deleted: false,
       token: "initial token",
@@ -45,6 +53,18 @@ class EnterLive extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.onChat = this.onChat.bind(this);
     this.handleChangeSubscribers = this.handleChangeSubscribers.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    // user props가 변경되었을 때만 업데이트합니다.
+    if (prevProps.user !== this.props.user) {
+      this.setState({
+        myUserName: this.props.user.nickname, // 새로운 user 값으로 상태를 업데이트합니다.
+        // 다른 필요한 업데이트도 수행할 수 있습니다.
+      });
+    }
   }
 
   componentDidMount() {
@@ -57,6 +77,10 @@ class EnterLive extends Component {
 
   onbeforeunload(event) {
     this.leaveSession();
+  }
+
+  handleRedirect() {
+    window.location.href = "/gawm/";
   }
 
   handleChangeSessionId(e) {
@@ -122,6 +146,8 @@ class EnterLive extends Component {
 
   async joinSession() {
     event.preventDefault();
+    console.log("mySessionId", this.state.mySessionId);
+    console.log("this.props", this.props);
     if (this.state.mySessionId && this.state.myUserName) {
       const token = await this.getToken();
       console.log(token);
@@ -167,24 +193,9 @@ class EnterLive extends Component {
           console.warn(exception);
         });
 
-        // const token = await this.getToken();
-
         mySession
           .connect(this.state.token, { clientData: this.state.myUserName })
           .then(async () => {
-            // let publisher = await this.OV.initPublisherAsync(undefined, {
-            //   audioSource: undefined,
-            //   videoSource: undefined,
-            //   publishAudio: true,
-            //   publishVideo: true,
-            //   resolution: "640x480",
-            //   frameRate: 30,
-            //   insertMode: "APPEND",
-            //   mirror: false,
-            // });
-
-            // mySession.publish(publisher);
-
             localUser.setNickname(this.state.myUserName);
             localUser.setConnectionId(this.state.session.connection.connectionId);
             localUser.setScreenShareActive(true);
@@ -192,22 +203,6 @@ class EnterLive extends Component {
             localUser.setType("remote");
             localUser.setAudioActive(true);
             localUser.setVideoActive(true);
-
-            // var devices = await this.OV.getDevices();
-            // var videoDevices = devices.filter((device) => device.kind === "videoinput");
-            // var currentVideoDeviceId = publisher.stream
-            //   .getMediaStream()
-            //   .getVideoTracks()[0]
-            //   .getSettings().deviceId;
-            // var currentVideoDevice = videoDevices.find(
-            //   (device) => device.deviceId === currentVideoDeviceId
-            // );
-
-            // this.setState({
-            //   currentVideoDevice: currentVideoDevice,
-            //   mainStreamManager: publisher,
-            //   publisher: publisher,
-            // });
           })
           .catch((error) => {
             console.log("There was an error connecting to the session:", error.code, error.message);
@@ -298,85 +293,27 @@ class EnterLive extends Component {
     const liveName = this.state.liveName;
     const deleted = this.state.deleted;
     var chatDisplay = { display: this.state.chatDisplay };
+    const appliedImg = "https://gwwmbucket.s3.ap-northeast-2.amazonaws.com/" + this.props.image;
 
     return (
       <div className="container">
          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm mx-auto">
         {this.state.session === undefined ? (
-          <div id="join">
-            <div id="img-div">
-              <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
-            </div>
-              <div className="flex justify-between items-center mb-4">
-                <p className="text-4xl font-bold text-gray-800">26°C 라이브</p>
-                <div className="space-x-1">
-                  <span className="bg-red-200 rounded-full h-3 w-3 inline-block"></span>
-                  <span className="bg-red-400 rounded-full h-3 w-3 inline-block"></span>
-                  <span className="bg-red-600 rounded-full h-3 w-3 inline-block"></span>
-                </div>
-              </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-
-                <p>
-                  <label> isPublic : </label>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="isPublic"
-                      checked={this.state.isPublic}
-                      onChange={this.handleChangeIspublic}
-                    />
-                    <span class="slider"></span>
-                  </label>
-                </p>
-                <p>
-                  <label> liveName: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="liveName"
-                    value={liveName}
-                    onChange={this.handleChangeLiveName}
-                    required
-                  />
-                </p>
-
-                <p>
-                  <label> 세션 비우기 : </label>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="deleted"
-                      checked={this.state.deleted}
-                      onChange={this.handleChangeDeleted}
-                    />
-                    <span class="slider"></span>
-                  </label>
-                </p>
+          <form className="form-group" onSubmit={this.joinSession}>
+            <div id="join" className="w-26 h-26 rounded-lg relative">
+              <img
+                className="w-full h-full object-cover rounded-lg"
+                src={appliedImg}
+                alt={this.props.title}
+              />
+              <div
+                id="join-dialog"
+                className="absolute bottom-0 left-0 right-0 h-9 bg-black opacity-70 rounded-b-lg leading-[0.5rem] px-0.5"
+              >
+                <span className="inline-block text-sm text-white">{this.props.title}</span>
+                <span id="two" className="inline-block text-[0.6rem] text-tertiary">
+                  {this.props.createdDate} · {this.props.points} 포인트
+                </span>
 
                 <p className="text-center">
                   <input
@@ -386,10 +323,9 @@ class EnterLive extends Component {
                     value="JOIN"
                   />
                 </p>
-              </form>
+              </div>
             </div>
-          </div>
-        
+          </form>
         ) : null}
 
         {this.state.session !== undefined ? (
@@ -410,29 +346,9 @@ class EnterLive extends Component {
                 onClick={this.switchCamera}
                 value="Switch Camera"
               />
-              {/* <input
-                className="btn btn-large btn-success"
-                type="button"
-                id="buttonSwitchChat"
-                onClick={this.onChat}
-                value="ON/OFF Chat"
-              /> */}
             </div>
 
-            {/* {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-              </div>
-            ) : null} */}
             <div id="video-container" className="col-md-6">
-              {/* {this.state.publisher !== undefined ? (
-                <div
-                  className="stream-container col-md-6 col-xs-6"
-                  onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                >
-                  <UserVideoComponent streamManager={this.state.publisher} />
-                </div>
-              ) : null} */}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={sub.id}
@@ -463,13 +379,6 @@ class EnterLive extends Component {
   }
 
   async getToken() {
-    // const sessionId = await this.createSession(
-    //   this.state.mySessionId,
-    //   this.state.liveName,
-    //   this.state.isPublic,
-    //   this.state.deleted
-    // );
-    const sessionId = "SessionA";
     return await this.createToken(this.state.mySessionId);
   }
 
@@ -504,55 +413,4 @@ class EnterLive extends Component {
   }
 }
 
-export default EnterLive;
-
-
-
-
-
-    
-      <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <p className="text-4xl font-bold text-gray-800">26°C 라이브</p>
-          <div className="space-x-1">
-            <span className="bg-red-200 rounded-full h-3 w-3 inline-block"></span>
-            <span className="bg-red-400 rounded-full h-3 w-3 inline-block"></span>
-            <span className="bg-red-600 rounded-full h-3 w-3 inline-block"></span>
-          </div>
-        </div>
-        <div className="mb-4">
-          <h2 className="text-lg text-gray-800 font-bold mb-2">방 정보</h2>
-          <input
-            className="border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="room-title"
-            type="text"
-            placeholder="제목을 입력해주세요"
-          />
-        </div>
-        <div className="mb-6">
-          <h2 className="text-lg text-gray-800 font-bold mb-2">공개 설정</h2>
-          <select
-            className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
-            id="room-visibility"
-          >
-            <option>전체 공개</option>
-            <option>친구 공개</option>
-          </select>
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            라이브 시작
-          </button>
-          <button
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-            type="button"
-          >
-            취소
-          </button>
-        </div>
-      </div>
-  
-  
+export default withUser(EnterLive);

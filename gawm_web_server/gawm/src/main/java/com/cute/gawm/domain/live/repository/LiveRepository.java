@@ -20,4 +20,6 @@ public interface LiveRepository extends JpaRepository<Live, Integer> {
 
     Live findLiveByUser(User user);
 
+    void deleteByUser(User user);
+
 }

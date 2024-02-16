@@ -1,12 +1,16 @@
+.container{
+  top: 200px;
+}
 
 #join{
     text-align: center;
-}
+  }
 
 #join, #session {
     position: absolute;
-    margin: auto;
-    top: 100px;
+    /* margin: auto; */
+    margin-top: 200px;
+    /* top: 100px; */
     bottom: 0;
     left: 0;
     right: 0;
