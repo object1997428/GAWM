@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 // import "./App.css";
-// import "./AppCustom.css";
+import "./AppCustom.css";
 import { OpenVidu } from "openvidu-browser";
 import UserVideoComponent from "../UserVideoComponent.jsx";
 import UserModel from "../models/user-model.jsx";
@@ -293,76 +293,26 @@ class EnterLive extends Component {
     const liveName = this.state.liveName;
     const deleted = this.state.deleted;
     var chatDisplay = { display: this.state.chatDisplay };
+    const appliedImg = "https://gwwmbucket.s3.ap-northeast-2.amazonaws.com/" + this.props.image;
 
     return (
       <div className="container">
         {this.state.session === undefined ? (
-          <div id="join">
-            <div id="img-div">
-              <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
-            </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> {liveName} </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                {/* <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-
-                <p>
-                  <label> isPublic : </label>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="isPublic"
-                      checked={this.state.isPublic}
-                      onChange={this.handleChangeIspublic}
-                    />
-                    <span class="slider"></span>
-                  </label>
-                </p>
-                <p>
-                  <label> liveName: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="liveName"
-                    value={liveName}
-                    onChange={this.handleChangeLiveName}
-                    required
-                  />
-                </p>
-
-                <p>
-                  <label> 세션 비우기 : </label>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="deleted"
-                      checked={this.state.deleted}
-                      onChange={this.handleChangeDeleted}
-                    />
-                    <span class="slider"></span>
-                  </label>
-                </p> */}
+          <form className="form-group" onSubmit={this.joinSession}>
+            <div id="join" className="w-26 h-26 rounded-lg relative">
+              <img
+                className="w-full h-full object-cover rounded-lg"
+                src={appliedImg}
+                alt={this.props.title}
+              />
+              <div
+                id="join-dialog"
+                className="absolute bottom-0 left-0 right-0 h-9 bg-black opacity-70 rounded-b-lg leading-[0.5rem] px-0.5"
+              >
+                <span className="inline-block text-sm text-white">{this.props.title}</span>
+                <span id="two" className="inline-block text-[0.6rem] text-tertiary">
+                  {this.props.createdDate} · {this.props.points} 포인트
+                </span>
 
                 <p className="text-center">
                   <input
@@ -372,9 +322,9 @@ class EnterLive extends Component {
                     value="JOIN"
                   />
                 </p>
-              </form>
+              </div>
             </div>
-          </div>
+          </form>
         ) : null}
 
         {this.state.session !== undefined ? (

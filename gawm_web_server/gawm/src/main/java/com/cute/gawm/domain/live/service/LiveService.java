@@ -63,7 +63,7 @@ public class LiveService {
         List<LiveMiniResponse> liveList = new ArrayList<>();
         followings.getFollowingList().forEach(followingId -> {
             User user = userRepository.findById(followingId).orElseThrow(() -> new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-            Live live = liveRepository.findByUserAndIsDeletedFalse(user);
+            Live live = liveRepository.findByUserAndIsDeletedFalse(user).orElseThrow(() -> new RuntimeException("NOT EXIST"));
             if (live != null) {
                 LiveMiniResponse build = LiveMiniResponse.builder()
                         .liveId(live.getLiveId())
@@ -168,7 +168,7 @@ public class LiveService {
     @Transactional
     public void createLive(String session, Integer userId, String name, Integer point, boolean isPublic, Map<String, Object> params) throws OpenViduJavaClientException, OpenViduHttpException {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("해당 유저가 존재하지 않습니다."));
-        Live live = liveRepository.findByUserAndIsDeletedFalse(user);
+        Live live = liveRepository.findByUserAndIsDeletedFalse(user).orElseThrow(() -> new RuntimeException("NOT EXIST"));;
         if (live != null) {
             deleteLiveByUserId(userId);
         }

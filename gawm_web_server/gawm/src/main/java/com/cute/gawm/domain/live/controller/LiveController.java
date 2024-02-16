@@ -58,7 +58,7 @@ public class LiveController {
 //            @LoginUser SessionUser sessionUser,
 //            @PathVariable Integer liveId
 //    ){
-//        liveService.deleteLive(sessionUser.getId(), liveId);
+//        liveService.deleteLive(sessionUser.getId());
 //        return ResponseUtil.buildBasicResponse(HttpStatus.OK, "라이브 삭제 완료");
 //    }
 
