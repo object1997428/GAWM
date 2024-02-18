@@ -5,6 +5,10 @@ import App from './App.jsx'
 import { registerSW } from 'virtual:pwa-register';
 
 if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.ready.then((registration) => {
+		registration.unregister();
+	});
+	  
 	registerSW({
 	  onNeedRefresh() {
 		// 사용자에게 업데이트가 필요하다고 알림

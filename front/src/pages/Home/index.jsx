@@ -23,8 +23,13 @@ import { fetchUserInfo, useUserStore } from "../../stores/user";
 function Home() {
   const [liveRooms, setLiveRooms] = useState(undefined);
   const user = useUserStore();
-
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.ready.then((registration) => {
+      registration.unregister();
+    });
+  }
   useEffect(() => {
+    
     const fetchLiveRooms = async () => {
       try {
         const response = await gawmapiAxios.get("/live-room/follow/");

@@ -3,6 +3,7 @@ video {
     height: auto;
     float: left;
     cursor: pointer;
+    object-fit: cover; 
 }
 .streamcomponent div {
     position: absolute;

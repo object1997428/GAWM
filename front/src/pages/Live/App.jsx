@@ -400,15 +400,14 @@ class Live extends Component {
               />
             </div>
 
-            <div id="video-container" className="col-md-6">
+            <div id="video-container" className="col-md-6 full-video">
               {this.state.publisher !== undefined ? (
                 <div
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container col-md-6 col-xs-6 full-video"
                   onClick={() => this.handleMainVideoStream(this.state.publisher)}
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              
               ) : null}
          
               {this.state.mainStreamManager !== undefined && (
