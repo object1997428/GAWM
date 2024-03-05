@@ -26,6 +26,7 @@ import com.cute.gawm.domain.user.entity.User;
 import com.cute.gawm.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -54,6 +55,7 @@ public class RevokeService {
     private final ClothesLookbookRepository clothesLookbookRepository;
     private final LookbookImageRepository lookbookImageRepository;
     private final S3Uploader s3Uploader;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public void deleteGoogleAccount(Integer sessionUserId, OAuth2AuthorizedClient oAuth2AuthorizedClient) {
@@ -156,6 +158,7 @@ public class RevokeService {
                 s3Uploader.deleteFile(lookbookImage.getImage());
             });
             lookbookImageRepository.deleteByLookbook(lookbook);
+            redisTemplate.opsForZSet().remove("toplist", Integer.toString(lookbookId));
         }
         lookbookRepository.deleteByUser_UserId(sessionUserId); //lookbook 삭제
         likesRepository.deleteByUserUserId(sessionUserId);

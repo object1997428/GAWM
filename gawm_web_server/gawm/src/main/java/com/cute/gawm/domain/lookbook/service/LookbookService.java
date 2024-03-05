@@ -215,8 +215,10 @@ public class LookbookService {
         List<LookbookThumbnailResponse> lookbookResponse = new ArrayList<>();
 
         lookbooks.forEach(lookbook -> {
-            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
+
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -226,7 +228,7 @@ public class LookbookService {
                     .likeCnt(likeCnt)
                     .userNickname(user.getNickname())
                     .userProfileImg(user.getProfileImg())
-                    .images(ImageUrls)
+                    .images(ImageUrl)
                     .build();
             lookbookResponse.add(build);
         });
@@ -363,8 +365,9 @@ public class LookbookService {
             if(userRepository.existsById(followingId)){
                 List<Lookbook> lookbooks = lookbookRepository.findByUserUserId(followingId);
                 lookbooks.forEach(lookbook -> {
-                    List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-                    List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+//                    List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//                    List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+                    String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
                     Integer likeCnt=likesRepository.countByLookbook(lookbook);
                     User user=lookbook.getUser();
                     LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -374,7 +377,7 @@ public class LookbookService {
                             .isPublic(lookbook.isPublic())
                             .userNickname(user.getNickname())
                             .userProfileImg(user.getProfileImg())
-                            .images(ImageUrls)
+                            .images(ImageUrl)
                             .build();
                     lookbookResponse.add(build);
                 });
@@ -400,8 +403,10 @@ public class LookbookService {
         PageImpl<Lookbook> lookbooks = lookbookRepository.searchLookbook(keyword, pageable);
         List<LookbookThumbnailResponse> responseList = new ArrayList<>();
         lookbooks.forEach(lookbook -> {
-            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
+
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -410,7 +415,7 @@ public class LookbookService {
                     .likeCnt(likeCnt)
                     .userNickname(user.getNickname())
                     .userProfileImg(user.getProfileImg())
-                    .images(ImageUrls)
+                    .images(ImageUrl)
                     .isPublic(lookbook.isPublic())
                     .build();
             responseList.add(build);
@@ -424,8 +429,9 @@ public class LookbookService {
         PageImpl<Lookbook> lookbooks = lookbookRepository.searchLookbookByTag(tags, pageable);
         List<LookbookThumbnailResponse> responseList = new ArrayList<>();
         lookbooks.forEach(lookbook -> {
-            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -434,7 +440,7 @@ public class LookbookService {
                     .likeCnt(likeCnt)
                     .userNickname(user.getNickname())
                     .userProfileImg(user.getProfileImg())
-                    .images(ImageUrls)
+                    .images(ImageUrl)
                     .build();
             responseList.add(build);
         });
@@ -514,8 +520,9 @@ public class LookbookService {
         List<LookbookThumbnailResponse> responseList = new ArrayList<>();
 
         topLookbooks.forEach(lookbook -> {
-            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -525,7 +532,7 @@ public class LookbookService {
                     .likeCnt(likeCnt)
                     .userNickname(user.getNickname())
                     .userProfileImg(user.getProfileImg())
-                            .images(ImageUrls)
+                            .images(ImageUrl)
                             .build();
                     responseList.add(build);
                 });
@@ -540,7 +547,7 @@ public class LookbookService {
             //tuple.getValue()
             Lookbook lookbook=lookbookRepository.findByLookbookId(Integer.parseInt(tuple.getValue()));
             List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
+            String ImageUrl=lookbookImage.get(0).getImage();
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -550,7 +557,7 @@ public class LookbookService {
                     .likeCnt(likeCnt)
                     .userNickname(user.getNickname())
                     .userProfileImg(user.getProfileImg())
-                    .images(ImageUrls)
+                    .images(ImageUrl)
                     .build();
             responseList.add(build);
         }

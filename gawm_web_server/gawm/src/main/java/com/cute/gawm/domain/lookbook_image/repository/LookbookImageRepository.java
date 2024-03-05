@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface LookbookImageRepository extends JpaRepository<LookbookImage, Integer> {
     List<LookbookImage> findAllByLookbook_LookbookId(Integer lookbookId);
+
+    LookbookImage findFirstByLookbook_LookbookId(Integer lookbookId);
     void deleteByLookbook(Lookbook lookbookId);
 
 }

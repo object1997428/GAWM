@@ -18,7 +18,7 @@ public class LookbookThumbnailResponse {
     private String userNickname;
     private String userProfileImg;
     private Timestamp createdAt;
-    private List<String> images;
+    private String images;
     private Integer likeCnt;
     private Boolean isPublic;
 }
