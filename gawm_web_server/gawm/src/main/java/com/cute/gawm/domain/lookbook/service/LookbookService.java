@@ -169,14 +169,33 @@ public class LookbookService {
                 .build();
         int lookbookId=lookbookRepository.save(lookbook).getLookbookId();
 
-        images.forEach(img -> {
+//        boolean isFirst=true;
+//        images.forEach(img -> {
+//            String name = s3Uploader.uploadFile(img);
+//            LookbookImage lookbookImage = LookbookImage.builder()
+//                    .image(name)
+//                    .lookbook(lookbook)
+//                    .build();
+//            lookbookImageRepository.save(lookbookImage);
+//            if(isFirst){
+//                lookbook.setThumbnail(name);
+//                isFirst=false;
+//            }
+//        });
+        boolean isFirst=true;
+        for (MultipartFile img : images) {
             String name = s3Uploader.uploadFile(img);
             LookbookImage lookbookImage = LookbookImage.builder()
                     .image(name)
                     .lookbook(lookbook)
                     .build();
             lookbookImageRepository.save(lookbookImage);
-        });
+            if(isFirst){
+                lookbook.setThumbnail(name);
+                isFirst=false;
+            }
+        }
+
 
         lookbookRequest.getClothes().forEach(clotheId -> {
             ClothesLookbook clothesLookbook = ClothesLookbook.builder()
@@ -291,14 +310,28 @@ public class LookbookService {
             });
             lookbookImageRepository.deleteByLookbook(lookbook);
 
-            images.forEach((image) -> {
-                String name = s3Uploader.uploadFile(image);
+//            images.forEach((image) -> {
+//                String name = s3Uploader.uploadFile(image);
+//                LookbookImage lookbookImage = LookbookImage.builder()
+//                        .image(name)
+//                        .lookbook(lookbook)
+//                        .build();
+//                lookbookImageRepository.save(lookbookImage);
+//            });
+
+            boolean isFirst=true;
+            for (MultipartFile img : images) {
+                String name = s3Uploader.uploadFile(img);
                 LookbookImage lookbookImage = LookbookImage.builder()
                         .image(name)
                         .lookbook(lookbook)
                         .build();
                 lookbookImageRepository.save(lookbookImage);
-            });
+                if(isFirst){
+                    lookbook.setThumbnail(name);
+                    isFirst=false;
+                }
+            }
         }
 
         if (!lookbookUpdateRequest.getClothes().isEmpty()) {
@@ -520,9 +553,8 @@ public class LookbookService {
         List<LookbookThumbnailResponse> responseList = new ArrayList<>();
 
         topLookbooks.forEach(lookbook -> {
-//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-//            List<String> ImageUrls=lookbookImage.stream().map(Image-> Image.getImage()).collect(Collectors.toList());
-            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
+//            String ImageUrl=lookbookImageRepository.findFirstByLookbook_LookbookId(lookbook.getLookbookId()).getImage();
+            String ImageUrl=lookbook.getThumbnail();
             Integer likeCnt=likesRepository.countByLookbook(lookbook);
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
@@ -544,11 +576,12 @@ public class LookbookService {
         Set<ZSetOperations.TypedTuple<String>> toplist = redisTemplate.opsForZSet().reverseRangeWithScores("toplist", 0, 14);
         List<LookbookThumbnailResponse> responseList = new ArrayList<>();
         for (ZSetOperations.TypedTuple<String> tuple : toplist) {
-            //tuple.getValue()
             Lookbook lookbook=lookbookRepository.findByLookbookId(Integer.parseInt(tuple.getValue()));
-            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
-            String ImageUrl=lookbookImage.get(0).getImage();
-            Integer likeCnt=likesRepository.countByLookbook(lookbook);
+//            List<LookbookImage> lookbookImage = lookbookImageRepository.findAllByLookbook_LookbookId(lookbook.getLookbookId());
+//            String ImageUrl=lookbookImage.get(0).getImage();
+            String ImageUrl=lookbook.getThumbnail();
+//            Integer likeCnt=likesRepository.countByLookbook(lookbook);
+            Integer likeCnt = tuple.getScore().intValue();
             User user=lookbook.getUser();
             LookbookThumbnailResponse build = LookbookThumbnailResponse.builder()
                     .lookbookId(lookbook.getLookbookId())

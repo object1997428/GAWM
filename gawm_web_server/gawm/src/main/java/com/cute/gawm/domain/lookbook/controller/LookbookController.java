@@ -201,5 +201,9 @@ public class LookbookController {
         lookbookService.fetchRedis();
     }
 
+    @GetMapping("dummy")
+    public void makeDummy(){
+
+    }
 
 }

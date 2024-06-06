@@ -96,8 +96,8 @@ public class LookbookRepositoryCustomImpl extends QueryDslSupport implements Loo
     public List<Lookbook> findTopLookbook(Timestamp startDate, Timestamp endDate) {
         return queryFactory.select(lookbook)
                 .from(QLikes.likes)
-                .join(QLikes.likes.lookbook, lookbook)
-                .where(lookbook.createdAt.between(startDate, endDate))
+                .leftJoin(QLikes.likes.lookbook, lookbook)
+//                .where(lookbook.createdAt.between(startDate, endDate))
                 .groupBy(lookbook)
                 .orderBy(QLikes.likes.count().desc())
                 .limit(15)

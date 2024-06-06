@@ -31,4 +31,10 @@ public class Lookbook extends BaseEntity {
     @Column(name = "is_public")
     @Builder.Default
     private boolean isPublic = true;
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+    public void setThumbnail(String image){
+        this.thumbnail=image;
+    }
 }
