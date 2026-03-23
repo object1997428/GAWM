@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -19,6 +20,6 @@ public class LiveMiniResponse {
     private String name;
     private String session;
     private int point;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private Boolean isPublic;
 }

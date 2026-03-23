@@ -7,40 +7,32 @@ import com.cute.gawm.common.exception.UserNotFoundException;
 import com.cute.gawm.common.exception.UserNotMatchException;
 import com.cute.gawm.common.response.PagingResponse;
 import com.cute.gawm.common.util.s3.S3Uploader;
-import com.cute.gawm.domain.bookmark.repository.BookmarkRepository;
-import com.cute.gawm.domain.clothes.entity.Clothes;
-import com.cute.gawm.domain.clothes.repository.ClothesDetailRepository;
-import com.cute.gawm.domain.clothes.repository.ClothesRepository;
-import com.cute.gawm.domain.clothes_stylelog.repository.ClothesStylelogRepository;
-import com.cute.gawm.domain.comment.repository.CommentRepository;
 import com.cute.gawm.domain.following.repository.FollowerRepository;
 import com.cute.gawm.domain.following.repository.FollowingRepository;
 import com.cute.gawm.domain.following.service.FollowService;
-import com.cute.gawm.domain.lookbook.entity.Lookbook;
+import com.cute.gawm.domain.lookbook.dto.TopLookBookHashDto;
 import com.cute.gawm.domain.lookbook.repository.LookbookRepository;
-import com.cute.gawm.domain.stylelog.entity.Stylelog;
-import com.cute.gawm.domain.stylelog.repository.StylelogRepository;
-import com.cute.gawm.domain.tag_lookbook.repository.TagLookbookRepository;
 import com.cute.gawm.domain.user.dto.UserEditForm;
 import com.cute.gawm.domain.user.dto.UserInfoDto;
 import com.cute.gawm.domain.user.dto.UserSummaryInfoDto;
 import com.cute.gawm.domain.user.entity.User;
 import com.cute.gawm.domain.user.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.Comparator;
 
 
 @Service
@@ -53,9 +45,16 @@ public class UserService {
     private final LookbookRepository lookbookRepository;
     private final S3Uploader s3Uploader;
     private final FollowService followService;
-
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper jacksonObjectMapper;
 
     private static final Integer maxByteLength = 24;
+
+    @Value("${REDIS_SET_USER_KEY}")
+    private String userLookbookMappingKey;
+    @Value("${REDIS_HASH_LOOKBOOK_KEY}")
+    private String lookbookRankingSnapshotKey;
+
 
     public User findOne(Integer userId) {
         Optional<User> user = userRepository.findById(userId);
@@ -92,7 +91,6 @@ public class UserService {
     public void updateMember(Integer userId, UserEditForm form) throws IOException {
         User user = userRepository.findById(userId).get();
         user.update(form);
-
     }
 
     @Transactional
@@ -102,6 +100,12 @@ public class UserService {
         }
         User user = userRepository.findById(userId).get();
         user.updateNickname(nickname);
+
+
+        // 캐싱된 랭킹 룩북 update
+        updateCachedLookbooks(userId, lookBookHashDto -> {
+            lookBookHashDto.setUserNickname(nickname); //함수형 인터페이스를 이용해서 dto의 닉네임만 수정
+        });
     }
 
     @Transactional
@@ -112,6 +116,12 @@ public class UserService {
 
         String profileImg = s3Uploader.uploadFile(multipartFile);
         user.updateProfileImge(profileImg);
+
+        // 캐싱된 랭킹 룩북 update
+        updateCachedLookbooks(userId, lookBookHashDto -> {
+            lookBookHashDto.setUserProfileImg(profileImg); // 함수형 인터페이스를 이용해서 dto의 프로필만 수정
+        });
+
         return profileImg;
     }
 
@@ -283,6 +293,45 @@ public class UserService {
         if(user==null) throw new UserNotFoundException("해당 유저가 존재하지 않습니다.");
 
         user.addPoint(point);
+    }
+
+    private void updateCachedLookbooks(Integer userId, Consumer<TopLookBookHashDto> updateFunc) {
+        // 1. sets에서 userId로 postId 검색
+        Set<String> lookbookIds=redisTemplate.opsForSet().members(userLookbookMappingKey + userId);
+
+        // 2. hash에서 postId로 검색해서 update
+        for (Object idObj : lookbookIds) {
+            String lookbookId= idObj.toString();
+
+            // 조회
+            String cachedLookbookJson = (String) redisTemplate.opsForHash().get(lookbookRankingSnapshotKey, lookbookId);
+            if (cachedLookbookJson == null) {
+                log.error("해당 Hash의 lookbook 캐싱정보가 null -- lookbookId: {}",lookbookId);
+                continue;
+            }
+
+            // 역직렬화
+            TopLookBookHashDto lookBookHashDto;
+            try {
+                lookBookHashDto = jacksonObjectMapper.readValue(cachedLookbookJson, TopLookBookHashDto.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("역직렬화 처리 중 오류가 발생했습니다");
+            }
+
+            // 함수형 인터페이스를 이용해서 dto 수정
+            updateFunc.accept(lookBookHashDto);
+
+            // 직렬화
+            String serializedLookbook;
+            try{
+                serializedLookbook = jacksonObjectMapper.writeValueAsString(lookBookHashDto);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("직렬화 처리 중 오류가 발생했습니다");
+            }
+
+            // hash update
+            redisTemplate.opsForHash().put(lookbookRankingSnapshotKey, lookbookId.toString(), serializedLookbook);
+        }
     }
 }
 

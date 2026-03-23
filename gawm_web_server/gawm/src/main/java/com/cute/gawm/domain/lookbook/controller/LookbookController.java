@@ -6,6 +6,7 @@ import com.cute.gawm.common.response.PagingResponse;
 import com.cute.gawm.common.util.ResponseUtil;
 import com.cute.gawm.domain.lookbook.dto.request.LookbookCreateRequest;
 import com.cute.gawm.domain.lookbook.dto.request.LookbookUpdateRequest;
+import com.cute.gawm.domain.lookbook.dto.response.LookBookTopResponse_v2;
 import com.cute.gawm.domain.lookbook.dto.response.LookbookMiniResponse;
 import com.cute.gawm.domain.lookbook.dto.response.LookbookThumbnailResponse;
 import com.cute.gawm.domain.lookbook.service.LookbookService;
@@ -62,7 +63,19 @@ public class LookbookController {
 
     @GetMapping("/top_list")
     public ResponseEntity<?> getTopLookbookList() {
-        List<LookbookThumbnailResponse> topLookbooks = lookbookService.getTopLookbooksByRedis();
+        List<LookBookTopResponse_v2> topLookbooks = lookbookService.getTopLookbooks_v3();
+        return ResponseUtil.buildBasicResponse(HttpStatus.OK, topLookbooks);
+    }
+
+    @GetMapping("/top_list/rdb")
+    public ResponseEntity<?> getTopLookbookList_v2() {
+        List<LookBookTopResponse_v2> topLookbooks = lookbookService.getTopLookbooks_v2();
+        return ResponseUtil.buildBasicResponse(HttpStatus.OK, topLookbooks);
+    }
+
+    @GetMapping("/top_list/redis")
+    public ResponseEntity<?> getTopLookbookList_v3() {
+        List<LookBookTopResponse_v2> topLookbooks = lookbookService.getTopLookbooks_v3();
         return ResponseUtil.buildBasicResponse(HttpStatus.OK, topLookbooks);
     }
 

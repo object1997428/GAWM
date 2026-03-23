@@ -4,9 +4,11 @@ import com.cute.gawm.domain.clothes.entity.Clothes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ClothesRepository extends JpaRepository<Clothes,Integer> {
 
     @Query("SELECT COALESCE(MAX(c.orderNum), 0) FROM Clothes c WHERE c.user.userId = :userId")

@@ -2,13 +2,11 @@ package com.cute.gawm.domain.lookbook.dto.response;
 
 import com.cute.gawm.domain.clothes.dto.response.ClothesMiniResponse;
 import com.cute.gawm.domain.comment.dto.response.CommentResponse;
-import com.cute.gawm.domain.comment.entity.Comment;
 import com.cute.gawm.domain.tag.dto.response.TagResponse;
-import com.cute.gawm.domain.tag.entity.Tag;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,7 +16,7 @@ public class LookbookResponse {
     private Integer userId;
     private String userNickname;
     private String userProfileImg;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private List<ClothesMiniResponse> clothes;
     private List<String> lookbookImgs;
     private int likeCnt;

@@ -21,14 +21,25 @@ public class Lookbook extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lookbook_id")
     private int lookbookId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
+
     @Column
     @Builder.Default
     private Integer view = 0;
+
     @Column(name = "is_public")
     @Builder.Default
     private boolean isPublic = true;
+
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+
+    public void updateThumbnail(String thumbnail){
+        this.thumbnail=thumbnail;
+    }
 }

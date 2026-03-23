@@ -1,0 +1,3 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+DB Ranking API,1000,30228,30010,31459,33482,35396,6748,36694,84.900%,3.07055,3.74,0.43
+TOTAL,1000,30228,30010,31459,33482,35396,6748,36694,84.900%,3.07055,3.74,0.43

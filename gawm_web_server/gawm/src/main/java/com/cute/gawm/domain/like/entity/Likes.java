@@ -1,5 +1,6 @@
 package com.cute.gawm.domain.like.entity;
 
+import com.cute.gawm.common.BaseEntity;
 import com.cute.gawm.domain.lookbook.entity.Lookbook;
 import com.cute.gawm.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "likes")
-public class Likes {
+public class Likes extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")

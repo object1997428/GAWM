@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,8 +25,8 @@ public class ClothesInfoResponse {
     private List<String> patterns;
 
     // BaseEntity의 필드 추가
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Boolean isDeleted;
 
     public ClothesInfoResponse(Clothes clothes, ClothesDetail clothesDetail) {

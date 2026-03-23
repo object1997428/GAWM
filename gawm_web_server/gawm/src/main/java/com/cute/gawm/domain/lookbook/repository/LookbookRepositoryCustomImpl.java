@@ -5,10 +5,15 @@ import com.cute.gawm.common.util.QueryDslSupport;
 import com.cute.gawm.domain.clothes.entity.QClothes;
 import com.cute.gawm.domain.clothes_lookbook.entity.QClothesLookbook;
 import com.cute.gawm.domain.like.entity.QLikes;
+import com.cute.gawm.domain.lookbook.dto.TopLookBookDto;
+import com.cute.gawm.domain.lookbook.dto.response.LookBookTopResponse_v2;
 import com.cute.gawm.domain.lookbook.entity.Lookbook;
 import com.cute.gawm.domain.tag.entity.QTag;
 import com.cute.gawm.domain.tag_lookbook.entity.QTagLookbook;
+import com.cute.gawm.domain.user.entity.QUser;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -16,13 +21,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.swing.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.cute.gawm.domain.like.entity.QLikes.likes;
 import static com.cute.gawm.domain.lookbook.entity.QLookbook.lookbook;
+
 
 
 @Repository
@@ -31,6 +37,7 @@ public class LookbookRepositoryCustomImpl extends QueryDslSupport implements Loo
     public LookbookRepositoryCustomImpl(EntityManager entityManager) {
         super(Lookbook.class, entityManager);
     }
+
 
 
     @Override
@@ -93,14 +100,60 @@ public class LookbookRepositoryCustomImpl extends QueryDslSupport implements Loo
     }
 
     @Override
-    public List<Lookbook> findTopLookbook(Timestamp startDate, Timestamp endDate) {
+    public List<Lookbook> findTopLookbook(LocalDateTime startDate, LocalDateTime endDate) {
         return queryFactory.select(lookbook)
-                .from(QLikes.likes)
-                .join(QLikes.likes.lookbook, lookbook)
+                .from(likes)
+                .join(likes.lookbook, lookbook)
                 .where(lookbook.createdAt.between(startDate, endDate))
                 .groupBy(lookbook)
-                .orderBy(QLikes.likes.count().desc())
+                .orderBy(likes.count().desc())
                 .limit(15)
+                .fetch();
+    }
+
+    @Override
+    public List<LookBookTopResponse_v2> findTopLookbook_v2(LocalDateTime startDate, LocalDateTime endDate) {
+        QLikes likes= QLikes.likes;
+
+        return queryFactory.select(
+                        Projections.constructor(
+                                LookBookTopResponse_v2.class,
+                                lookbook.lookbookId,
+                                lookbook.user.userId,
+                                lookbook.user.nickname,
+                                lookbook.user.profileImg,
+                                lookbook.thumbnail,
+                                likes.count().intValue(),
+                                lookbook.createdAt
+                        )
+                )
+                .from(QLikes.likes)
+                .join(QLikes.likes.lookbook, lookbook)
+                .where(likes.updatedAt.between(startDate,endDate))
+                .groupBy(lookbook)
+                .orderBy(QLikes.likes.count().desc())
+                .limit(20)
+                .fetch();
+    }
+
+
+    @Override
+    public List<TopLookBookDto> getTopLookBookDetailInfo(List<Integer> lookbookIds){
+        return queryFactory.select(
+                Projections.constructor(
+                        TopLookBookDto.class,
+                        lookbook.lookbookId,
+                        lookbook.user.userId,
+                        lookbook.user.nickname,
+                        lookbook.user.profileImg,
+                        lookbook.createdAt,
+                        lookbook.thumbnail,
+                        Expressions.constant(0),
+                        lookbook.isPublic
+                ))
+                .from(lookbook)
+                .where(lookbook.lookbookId.in(lookbookIds))
+                .innerJoin(lookbook.user, QUser.user)
                 .fetch();
     }
 

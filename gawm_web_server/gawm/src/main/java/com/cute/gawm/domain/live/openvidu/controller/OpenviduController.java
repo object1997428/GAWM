@@ -26,7 +26,7 @@ public class OpenviduController {
     private final LiveService liveService;
 
     /**
-     * @param params The Session properties
+     * @param params The Session
      * @return The Session ID
      */
     @PostMapping
