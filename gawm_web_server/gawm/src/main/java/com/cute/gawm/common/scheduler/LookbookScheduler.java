@@ -17,6 +17,6 @@ public class LookbookScheduler {
 //    @Scheduled(fixedDelay = 10000) //10초마다 실행
     public void getTopLookbook() {
         log.info("스케줄러 시작");
-        lookbookService.updateTopLookbook();
+        lookbookService.updateTopLookbook_v2();
     }
 }

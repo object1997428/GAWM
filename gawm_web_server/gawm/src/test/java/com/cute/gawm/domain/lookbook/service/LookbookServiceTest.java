@@ -38,9 +38,6 @@ class LookbookServiceTest {
     void updateTopLookbook() {
 
         //when
-
-        lookbookService.updateTopLookbook();
-
-
+        lookbookService.updateTopLookbook_v2();
     }
 }

@@ -79,6 +79,7 @@ public class LookbookService {
     private final String lookbookLikeRankingTotalKey = "lookbook:like:ranking:total";
     private final String lookbookUserIndexKey = "lookbook:user:index";
     private final String lookbookLikeRanking10MinTempKey = "lookbook:like:ranking:10min:temp";
+    private final String lookbookRankingSnapshotTempKey = "lookbook:ranking:snapshot:temp";
     @Value("${REDIS_HASH_LOOKBOOK_KEY}")
     private String lookbookRankingSnapshotKey;
     @Value("${REDIS_SET_USER_KEY}")
@@ -922,8 +923,12 @@ public class LookbookService {
         }
 
         if (!hashData.isEmpty()) {
-            redisTemplate.delete(lookbookRankingSnapshotKey); //기존 데이터 삭제
-            redisTemplate.opsForHash().putAll(lookbookRankingSnapshotKey, hashData); //HashMap에 저장한 정보들 모두 hash에 넣기
+            // 혹시 모를 필요없는 기존 데이터 삭제
+            redisTemplate.delete(lookbookRankingSnapshotTempKey);
+            // HashMap에 저장한 정보들 모두 새로운 Hash에 넣기
+            redisTemplate.opsForHash().putAll(lookbookRankingSnapshotTempKey, hashData);
+            // 새로운 Hash를 기존 key로 rename, 동시에 기존 Hash는 삭제 됨
+            redisTemplate.rename(lookbookRankingSnapshotTempKey, lookbookRankingSnapshotKey);
         }
 
         // 4. sets에 상위 20개 게시물의 유저Id와 게시물Id 매핑하기(검색용)

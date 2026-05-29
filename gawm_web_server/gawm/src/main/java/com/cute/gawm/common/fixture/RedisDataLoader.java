@@ -23,7 +23,7 @@ public class RedisDataLoader implements CommandLineRunner {
 //        log.info("======= 대량 데이터 생성 종료 ========");
 //
 //        log.info("======= 집계 시작 ========");
-//        lookbookService.updateTopLookbook();
+//        lookbookService.updateTopLookbook_v2();
 //        log.info("======= 집계 종료 ========");
     }
 
