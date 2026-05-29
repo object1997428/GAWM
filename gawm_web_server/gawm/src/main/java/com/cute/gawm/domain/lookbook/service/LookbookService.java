@@ -757,6 +757,56 @@ public class LookbookService {
         return responseList;
     }
 
+
+    // Redis N+1문제 개선 버전
+    public List<LookBookTopResponse_v2> getTopLookbooks_v4() {
+        // 1. Hash에서 to20 조회(hgetall)
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(lookbookRankingSnapshotKey);
+
+        // 2. 전체 좋아요 집계 Sorted Set에서 top20의 좋아요 조회
+        // Hash에서 받아온 entry 객체들에서 lookbookId만 추출해서 배열로 생성
+        List<Object> lookbookIds = new ArrayList<>(entries.keySet());
+        Object[] lookbookIdArray = lookbookIds.toArray();
+
+        List<Double> likeCounts = redisTemplate.opsForZSet().score(lookbookLikeRankingTotalKey, lookbookIdArray);
+
+
+        // 3. 응답데이터 가공
+        List<LookBookTopResponse_v2> responseList = new ArrayList<>();
+        for (int i = 0; i < lookbookIds.size(); i++) {
+            String lookbookId = (String) lookbookIds.get(i);
+            String json=(String) entries.get(lookbookId);
+            Double likeCount = likeCounts.get(i);
+            log.info("lookbookId: {}, likeCount: {}", lookbookId, likeCount);
+
+            try {
+                //Hash의 value값 역직렬화
+                TopLookBookHashDto lookBookHashDto = jacksonObjectMapper.readValue(json, TopLookBookHashDto.class);
+
+                LookBookTopResponse_v2 response = LookBookTopResponse_v2.builder()
+                        .rank(lookBookHashDto.getRank())
+                        .lookbookId(lookBookHashDto.getLookbookId())
+                        .userId(lookBookHashDto.getUserId())
+                        .userNickname(lookBookHashDto.getUserNickname())
+                        .userProfileImg(lookBookHashDto.getUserProfileImg())
+                        .thumbNail(lookBookHashDto.getThumbNail())
+                        .likeCnt(likeCount == null ? 0 : likeCount.intValue())
+                        .createdAt(lookBookHashDto.getCreatedAt())
+                        .build();
+
+                responseList.add(response);
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("직렬화 처리 중 오류가 발생했습니다");
+            }
+        }
+
+
+        responseList.sort(Comparator.comparing(LookBookTopResponse_v2::getRank));
+        log.info("responseList: {}", responseList);
+        return responseList;
+    }
+
     @Transactional
     public void updateTopLookbook() {
         // 1. 10분간 집계된 sorted set에서 상위 20개 게시물Id 가져오기 (postId)
@@ -777,6 +827,8 @@ public class LookbookService {
                 .collect(Collectors.toMap(Lookbook::getLookbookId, l -> l));
 
         Map<String, String> hashData = new HashMap<>();
+        //위의 db 조회(in절)은 순서를 보장하지 않기 때문에
+        //sorted set에서 받아온 List순서대로(순위 순서) map에서 꺼내서 map의 상세정보와 순위를 함께 직렬화해서 hashmap에 저장
         for (int i = 0; i < top20LookbookIds.size(); i++) {
             Integer lookbookId = top20LookbookIds.get(i);
             Lookbook lookbook = lookbookMap.get(lookbookId);
@@ -797,7 +849,7 @@ public class LookbookService {
 
         if (!hashData.isEmpty()) {
             redisTemplate.delete(lookbookRankingSnapshotKey); //기존 데이터 삭제
-            redisTemplate.opsForHash().putAll(lookbookRankingSnapshotKey, hashData);
+            redisTemplate.opsForHash().putAll(lookbookRankingSnapshotKey, hashData); //HashMap에 저장한 정보들 모두 hash에 넣기
         }
 
         // 4. sets에 상위 20개 게시물의 유저Id와 게시물Id 매핑하기(검색용)

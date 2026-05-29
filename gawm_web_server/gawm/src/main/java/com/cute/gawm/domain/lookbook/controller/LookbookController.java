@@ -75,7 +75,7 @@ public class LookbookController {
 
     @GetMapping("/top_list/redis")
     public ResponseEntity<?> getTopLookbookList_v3() {
-        List<LookBookTopResponse_v2> topLookbooks = lookbookService.getTopLookbooks_v3();
+        List<LookBookTopResponse_v2> topLookbooks = lookbookService.getTopLookbooks_v4();
         return ResponseUtil.buildBasicResponse(HttpStatus.OK, topLookbooks);
     }
 
