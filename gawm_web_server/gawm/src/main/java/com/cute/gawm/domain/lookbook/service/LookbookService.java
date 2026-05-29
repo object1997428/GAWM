@@ -78,6 +78,7 @@ public class LookbookService {
     private final String lookbookLikeRanking10MinKey = "lookbook:like:ranking:10min";
     private final String lookbookLikeRankingTotalKey = "lookbook:like:ranking:total";
     private final String lookbookUserIndexKey = "lookbook:user:index";
+    private final String lookbookLikeRanking10MinTempKey = "lookbook:like:ranking:10min:temp";
     @Value("${REDIS_HASH_LOOKBOOK_KEY}")
     private String lookbookRankingSnapshotKey;
     @Value("${REDIS_SET_USER_KEY}")
@@ -818,6 +819,79 @@ public class LookbookService {
         if (top20LookbookIds.isEmpty()) throw new DataNotFoundException("랭킹 룩북의 데이터가 존재하지 않습니다.");
 
         redisTemplate.delete(lookbookLikeRanking10MinKey); //sorted set 초기화
+
+        // 2. 게시물Id로 mariaDB에서 게시물+유저 상세정보 가져오기 c.f top20PostIds와 순서 다름
+        List<Lookbook> lookbookList = lookbookRepository.findAllByLookbookIdInWithUser(top20LookbookIds);
+
+        // 3. hash에 상위 20개 게시물 상세정보 넣기
+        Map<Integer, Lookbook> lookbookMap = lookbookList.stream()
+                .collect(Collectors.toMap(Lookbook::getLookbookId, l -> l));
+
+        Map<String, String> hashData = new HashMap<>();
+        //위의 db 조회(in절)은 순서를 보장하지 않기 때문에
+        //sorted set에서 받아온 List순서대로(순위 순서) map에서 꺼내서 map의 상세정보와 순위를 함께 직렬화해서 hashmap에 저장
+        for (int i = 0; i < top20LookbookIds.size(); i++) {
+            Integer lookbookId = top20LookbookIds.get(i);
+            Lookbook lookbook = lookbookMap.get(lookbookId);
+
+            if (lookbook != null) {
+                TopLookBookHashDto dto = new TopLookBookHashDto(lookbook);
+                dto.setRank(i + 1);
+
+                //직렬화
+                try {
+                    String jsonValue = jacksonObjectMapper.writeValueAsString(dto);
+                    hashData.put(lookbookId.toString(), jsonValue);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("직렬화 처리 중 오류가 발생했습니다");
+                }
+            }
+        }
+
+        if (!hashData.isEmpty()) {
+            redisTemplate.delete(lookbookRankingSnapshotKey); //기존 데이터 삭제
+            redisTemplate.opsForHash().putAll(lookbookRankingSnapshotKey, hashData); //HashMap에 저장한 정보들 모두 hash에 넣기
+        }
+
+        // 4. sets에 상위 20개 게시물의 유저Id와 게시물Id 매핑하기(검색용)
+        Set<String> oldUserIds = redisTemplate.opsForSet().members(lookbookUserIndexKey);
+        if (oldUserIds != null && !oldUserIds.isEmpty()) {
+            redisTemplate.delete(oldUserIds); // 이전 유저Id set에 담긴 lookbookId들 삭제(allUsersKey안의 데이터)
+            redisTemplate.delete(lookbookUserIndexKey); // userId set들 자체 삭제
+        }
+
+
+        for (Lookbook lookbook : lookbookList) {
+            String userId = String.valueOf(lookbook.getUser().getUserId());
+            String lookbookId = String.valueOf(lookbook.getLookbookId());
+
+            redisTemplate.opsForSet().add(userLookbookMappingKey + userId, lookbookId);
+            redisTemplate.expire(userLookbookMappingKey + userId, 1, TimeUnit.HOURS); //TTL 설정
+
+            redisTemplate.opsForSet().add(lookbookUserIndexKey, userId);
+        }
+    }
+
+    /* 정합성 문제 해결한 버전*/
+    @Transactional
+    public void updateTopLookbook_v2() {
+        // 1. 10분간 집계된 Sorted Set에서 상위 20개 게시물Id 가져오기 (postId)
+        // 기존 Sorted Set의 key를 temp키로 rename: 집계 중 쌓이는 likeCnt를 새로운 10MinKey의 Sorted Set에 담아서 유실 방지 목적
+        Boolean hasKey = redisTemplate.hasKey(lookbookLikeRanking10MinKey);
+        if(!Boolean.TRUE.equals(hasKey)){
+            log.info("10분간 집계된 좋아요가 없어 랭킹 집계를 건너뜁니다.");
+            return;
+        }
+
+        redisTemplate.rename(lookbookLikeRanking10MinKey, lookbookLikeRanking10MinTempKey);
+
+        Set<String> range = redisTemplate.opsForZSet().reverseRange(lookbookLikeRanking10MinTempKey, 0, 19);
+        List<Integer> top20LookbookIds = (range == null) ? Collections.emptyList() :
+                range.stream().map(Integer::valueOf).collect(Collectors.toList());
+        log.info("top20LookbookIds: {}",top20LookbookIds);
+
+        //기존 sorted set 삭제
+        redisTemplate.delete(lookbookLikeRanking10MinTempKey);
 
         // 2. 게시물Id로 mariaDB에서 게시물+유저 상세정보 가져오기 c.f top20PostIds와 순서 다름
         List<Lookbook> lookbookList = lookbookRepository.findAllByLookbookIdInWithUser(top20LookbookIds);
